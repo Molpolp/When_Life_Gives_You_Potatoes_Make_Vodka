@@ -131,13 +131,13 @@
     <ClCompile Include="CreateMap.cpp" />
     <ClCompile Include="Prod_MainGameloop.cpp" />
     <ClCompile Include="UpdateMap.cpp" />
-    <ClCompile Include="Verify_Int_Input.cpp" />
+    <ClCompile Include="VerifyInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base64Map.h" />
     <ClInclude Include="CreateMap.h" />
     <ClInclude Include="UpdateMap.h" />
-    <ClInclude Include="Verify_Int_Input.h" />
+    <ClInclude Include="VerifyInput.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

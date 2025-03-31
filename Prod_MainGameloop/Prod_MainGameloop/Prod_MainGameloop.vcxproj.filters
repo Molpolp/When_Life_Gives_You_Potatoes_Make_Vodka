@@ -27,7 +27,7 @@
     <ClCompile Include="UpdateMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Verify_Int_Input.cpp">
+    <ClCompile Include="VerifyInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="UpdateMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Verify_Int_Input.h">
+    <ClInclude Include="VerifyInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

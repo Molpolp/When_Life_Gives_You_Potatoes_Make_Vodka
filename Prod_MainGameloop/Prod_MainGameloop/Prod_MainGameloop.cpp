@@ -22,7 +22,7 @@ Version: 1.0
 #include "CreateMap.h"
 #include "UpdateMap.h"
 #include "Base64Map.h"
-#include "Verify_Int_Input.h"
+#include "VerifyInput.h"
 #include <cstdlib>
 
 //#include <Windows.h>
@@ -46,9 +46,9 @@ int main()
 
 	// unsigned long seed = CM::createSeed(userSeedInput);
 
-	userHeightInput = VII::verifyUserInput("Please input an int value for the map's height: ", 1, 75);
+	userHeightInput = VI::verifyIntInput("Please input an int value for the map's height: ", 1, 75);
 
-	userWidthInput = VII::verifyUserInput("Please input an int value for the map's width: ", 1, 75);
+	userWidthInput = VI::verifyIntInput("Please input an int value for the map's width: ", 1, 75);
 
 	std::cout << std::endl << std::endl;
 
@@ -122,7 +122,6 @@ int main()
 	// Loop for displaying the game map
 	while (continueIterationsToDo != 0)
 	{
-
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)
 		{
 			UM::iterateMap(mapHeightIndexing, mapWidthIndexing, generationItteration, mapPrototype0, mapPrototype1);
@@ -132,6 +131,18 @@ int main()
 
 		generationItteration++;
 	}
+
+	int userChoiceToPrintSeed = VI::verifyIntInput(
+		"Would you like the seed of this map printed to the console? (1 for yes, 0 for no): ", 0, 1);
+
+	std::cout << std::endl;
+
+	if (userChoiceToPrintSeed)
+	{
+		std::cout << CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? mapPrototype0 : mapPrototype1));
+	}
+
+	std::cout << std::endl << std::endl;
 
 	// Not sure why return 0 isn't working to exit the program, this works tho.
 	if (continueIterationsToDo == 0)

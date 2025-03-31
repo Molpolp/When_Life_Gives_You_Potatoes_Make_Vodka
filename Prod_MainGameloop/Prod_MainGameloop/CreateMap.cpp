@@ -40,8 +40,7 @@ namespace CM
 	std::string createGamestate(unsigned int seed, int height, int width)
 	{
 		int totalBoolsRequired = height * width,
-			currentSeedValue
-			;
+			currentSeedValue;
 
 		short remainder = totalBoolsRequired % 6;
 
@@ -77,7 +76,52 @@ namespace CM
 		return outputString;
 	}
 
-	void initializeMapBools(const std::string& userInput, int height, int width, std::vector<std::vector<int>>& gameMap)
+	std::string convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap)
+	{
+		int currentCol = 0,
+			currentRow = 0,
+			runningTotalToDecode= 0;
+
+		bool encodingMap = true;
+
+		int* mapPtr = &gameMap[currentRow].front();
+
+		std::string stringToBeEncoded;
+		
+		while (encodingMap)
+		{
+			for (int index = 0; index < 5; index++)
+			{
+				if (&gameMap[currentRow].back() < mapPtr)
+				{
+					if (currentRow == height - 1)
+					{
+						encodingMap = false;
+
+						stringToBeEncoded.push_back('!');
+
+						break;
+					}
+
+					currentRow++;
+
+					mapPtr = &gameMap[currentRow].front();
+				}
+
+				runningTotalToDecode += (*mapPtr == 1 ? std::pow(2, index) : 0);
+
+				mapPtr++;
+			}
+
+			stringToBeEncoded.push_back(B64::base64ValToChar[runningTotalToDecode]);
+
+			runningTotalToDecode = 0;
+		}
+
+		return stringToBeEncoded;
+	}
+
+	void convertBase64StrToMap(const std::string& userInput, int height, int width, std::vector<std::vector<int>>& gameMap)
 	{
 		int currentCol = 0,
 			currentRow = 0;
@@ -167,14 +211,14 @@ namespace CM
 	{
 		// std::vector<std::vector<int>> gameMap(userInputHeight, std::vector<int>(userInputWidth, 0));
 
-		initializeMapBools(userInputForSeed, userInputHeight, userInputWidth, mapToInitialize);
+		convertBase64StrToMap(userInputForSeed, userInputHeight, userInputWidth, mapToInitialize);
 
 		displayMap(mapToInitialize);
 	}
 
 	void userContinueIterations(unsigned short& numberOfIterations)
 	{
-		numberOfIterations = VII::verifyUserInput("Please input the number of times you want to iterate (0 to terminate the simulation): ", 0, 4000);
+		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to iterate (0 to terminate the simulation): ", 0, 4000);
 	}
 
 	void printValuesFromMaps(char character, int number, int range)

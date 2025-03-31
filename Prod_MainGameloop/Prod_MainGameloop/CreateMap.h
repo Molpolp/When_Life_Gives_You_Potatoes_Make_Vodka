@@ -4,7 +4,7 @@
 #ifndef CREATEMAP_H
 #define CREATEMAP_H
 
-#include "Verify_Int_Input.h"
+#include "VerifyInput.h"
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -27,7 +27,9 @@ namespace CM
 
     std::string createGamestate(unsigned int seed, int height, int width);
 
-    void initializeMapBools(const std::string& userInput, int height, int width,
+    std::string convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap);
+
+    void convertBase64StrToMap(const std::string& userInput, int height, int width,
         std::vector<std::vector<int>>& gameMap);
 
     void displayMap(std::vector<std::vector<int>>& gameMap);
