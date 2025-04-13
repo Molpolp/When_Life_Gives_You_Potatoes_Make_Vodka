@@ -4,10 +4,22 @@
 #ifndef UPDATEMAP_H
 #define UPDATEMAP_H
 
+
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 #include "Base64Map.h"
 #include "CreateMap.h"
+#include <Windows.h>
+
+#ifdef _WIN32
+	#define CLEAR "cls"
+
+#else
+	#define CLEAR "clear"
+
+#endif
+
 
 namespace UM
 {
@@ -22,6 +34,8 @@ namespace UM
 		std::vector<std::vector<int>>& outputMap);
 
 	void printMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& gameMap);
+
+	void clearScreen();
 
 	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
 		std::vector<std::vector<int>>& map0, std::vector<std::vector<int>>& map1);

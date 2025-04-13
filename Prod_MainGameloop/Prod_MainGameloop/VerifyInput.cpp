@@ -138,6 +138,10 @@ namespace VI
 			}
 		}
 
+		// Fix for dangling newline char
+		if (std::cin.peek() == 10)
+			std::cin.ignore(1);
+
 		return intUserInput;
 	}
 
@@ -238,9 +242,55 @@ namespace VI
 			return userInput;
 	}
 
-	// Assuming letters only
-	// No special characters and no numbers
-	std::string verifyStringInput(std::string inputPrompt, bool whitespaceAllowed, bool getEntireLine, int lengthOfInput)
+	// Used to create a string aka character array
+	char* verifyCharInput(std::string inputPrompt)
+	{
+		const static short SIZE = 20;
+		static bool invalidUserInput;
+		char* arrayPtr = new char[SIZE];
+
+		invalidUserInput = true;
+
+		while (invalidUserInput)
+		{
+			std::cout << inputPrompt;
+			std::cin.getline(arrayPtr, SIZE);
+
+			if (std::cin.fail())
+			{
+				std::cin.clear();
+
+				std::cin.ignore(1000, '\n');
+
+				std::cout << "Invalid input, something entered caused cin.get to fail." << std::endl;
+			}
+
+			for (int index = 0; (index < SIZE) || (arrayPtr[index] == 0); index++)
+			{
+				if (arrayPtr[index] == '\0')
+				{
+					invalidUserInput = false;
+
+					break;
+				}
+
+				if ((arrayPtr[index] != 32) && (tolower(arrayPtr[index]) < 97 || 122 < tolower(arrayPtr[index])))
+				{
+					std::cin.clear();
+
+					std::cin.ignore(1000, '\n');
+
+					std::cout << "Invalid input, characters only please." << std::endl;
+
+					break;
+				}
+			}
+		}
+		return arrayPtr;
+	}
+
+	// Assuming letters only currently for simplicity
+	std::string verifyStringInput(std::string inputPrompt)
 	{
 		static bool invalidUserInput;
 		static std::string userInput;
@@ -249,30 +299,30 @@ namespace VI
 
 		while (invalidUserInput)
 		{
-			if (getEntireLine)
+			std::cout << inputPrompt;
+
+			std::getline(std::cin, userInput);
+
+			for (int index = 0; index < userInput.size(); index++)
 			{
-
-			}
-
-			else
-			{
-				static char currentCharacter;
-				static int itteration;
-
-				itteration = 0;
-
-				do
+				if ((static_cast<int>(userInput[index]) != 32) && (tolower(userInput[index]) < 97) || 122 < tolower(userInput[index]))
 				{
-					std::cin.get(currentCharacter);
+					// Invalid input, non character ASCII value detected
 
-					if (tolower(currentCharacter) < 97 || 122 < tolower(currentCharacter))
-					{
+					std::cout << "Invalid input, please refrain from using special characters or numbers."
+						<< std::endl;
 
-					}
+					userInput.clear();
 
-					itteration++;
+					invalidUserInput = true;
 
-				} while (itteration < lengthOfInput);
+					break;
+				}
+
+				else
+				{
+					invalidUserInput = false;
+				}
 			}
 		}
 

@@ -1,6 +1,6 @@
 /***************************************
 Gregory Tuosto
-Exercise 07 Q5
+Final Project
 Date Completed: March 20, 2025
 Description: This is a prototype for the backend of the project I'm working on for this class,
 			 It's a representation of Conway's Game of Life
@@ -25,8 +25,6 @@ Version: 1.0
 #include "VerifyInput.h"
 #include <cstdlib>
 
-//#include <Windows.h>
-// Used to check over many iterations visually and manually
 
 int main()
 {
@@ -44,22 +42,17 @@ int main()
 	std::cin >> userSeedInput;
 	std::cout << std::endl;
 
-	// unsigned long seed = CM::createSeed(userSeedInput);
-
 	userHeightInput = VI::verifyIntInput("Please input an int value for the map's height: ", 1, 75);
-
 	userWidthInput = VI::verifyIntInput("Please input an int value for the map's width: ", 1, 75);
 
 	std::cout << std::endl << std::endl;
 
-	std::vector<std::vector<int>> mapPrototype0(userHeightInput, std::vector<int>(userWidthInput, 0));
-	std::vector<std::vector<int>> mapPrototype1(userHeightInput, std::vector<int>(userWidthInput, 0));
-
-	//gamestateString = CM::createGamestate(seed, userHeightInput, userWidthInput);
-	//std::cout << gamestateString;
+	// init game maps
+	std::vector<std::vector<int>> gameMap0(userHeightInput, std::vector<int>(userWidthInput, 0));
+	std::vector<std::vector<int>> gameMap1(userHeightInput, std::vector<int>(userWidthInput, 0));
 
 	// Generates our game map and prints it to the console
-	CM::generateGameMap(userSeedInput, userHeightInput, userWidthInput, mapPrototype0);
+	CM::generateGameMap(userSeedInput, userHeightInput, userWidthInput, gameMap0);
 
 	/*
 	int menuChoice;
@@ -124,7 +117,9 @@ int main()
 	{
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)
 		{
-			UM::iterateMap(mapHeightIndexing, mapWidthIndexing, generationItteration, mapPrototype0, mapPrototype1);
+			UM::iterateMap(mapHeightIndexing, mapWidthIndexing, generationItteration, gameMap0, gameMap1);
+
+			generationItteration++;
 		}
 
 		CM::userContinueIterations(continueIterationsToDo);
@@ -139,7 +134,7 @@ int main()
 
 	if (userChoiceToPrintSeed)
 	{
-		std::cout << CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? mapPrototype0 : mapPrototype1));
+		std::cout << CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? gameMap0 : gameMap1));
 	}
 
 	std::cout << std::endl << std::endl;

@@ -6,6 +6,15 @@ Version: 1.0
 ***************************************/
 #include "UpdateMap.h"
 
+#ifdef _WIN32
+	#define CLEAR "cls"
+
+#else
+	#define CLEAR "clear"
+
+#endif
+
+
 namespace UM
 {
 	static const int ALIVE_CELL = 1,
@@ -120,10 +129,18 @@ namespace UM
 		}
 	}
 
+	void clearScreen()
+	{
+		system(CLEAR);
+	}
+
 	// Used to iterate the given map state and display it
 	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
 		std::vector<std::vector<int>>& map0, std::vector<std::vector<int>>& map1)
 	{
+		Sleep(1000);
+		clearScreen();
+
 		if (generationItteration % 2 == 0)
 		{
 			UM::updateMap(mapHeightIndexing, mapWidthIndexing, map0, map1);

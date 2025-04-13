@@ -22,7 +22,9 @@ namespace VI
 	char verifyCharInput(std::string inputPrompt, bool lettersOnly,
 		bool choiceToReturnUpperOrLower, bool returnLower);
 
-	std::string verifyStringInput(std::string inputPrompt, bool whitespaceAllowed, bool getEntireLine, int lengthOfInput);
+	char* verifyCharInput(std::string inputPrompt);
+
+	std::string verifyStringInput(std::string inputPrompt);
 }
 
 #endif
