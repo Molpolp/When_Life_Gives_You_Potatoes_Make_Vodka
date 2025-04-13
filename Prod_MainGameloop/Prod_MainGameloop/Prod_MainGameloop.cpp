@@ -30,20 +30,20 @@ int main()
 {
 	B64::initializeBase64Maps();
 
-	std::string userSeedInput,
-		gamestateString
-		;
+	//std::string gamestateString;
+
+	ST::MyString gamestateString;
 
 	int userHeightInput,
-		userWidthInput
-		;
+		userWidthInput;
 
-	std::cout << "Please input some string for a seed (Any input is valid): ";
-	std::cin >> userSeedInput;
-	std::cout << std::endl;
+	char* userSeedInput = VI::verifyCharArrInput(
+		{ "Please input some string for a seed (Any input is valid): " }, ST::MAX_STR_LENGTH);
 
-	userHeightInput = VI::verifyIntInput("Please input an int value for the map's height: ", 1, 75);
-	userWidthInput = VI::verifyIntInput("Please input an int value for the map's width: ", 1, 75);
+	gamestateString.newStr(userSeedInput);
+
+	userHeightInput = VI::verifyIntInput("Please input an int value for the map's height: ", 5, 75);
+	userWidthInput = VI::verifyIntInput("Please input an int value for the map's width: ", 5, 75);
 
 	std::cout << std::endl << std::endl;
 
@@ -52,59 +52,9 @@ int main()
 	std::vector<std::vector<int>> gameMap1(userHeightInput, std::vector<int>(userWidthInput, 0));
 
 	// Generates our game map and prints it to the console
-	CM::generateGameMap(userSeedInput, userHeightInput, userWidthInput, gameMap0);
-
-	/*
-	int menuChoice;
-
-	std::cout << "MENU OPTIONS" << std::endl
-		<< "_______________" << std::endl
-		<< "1: Iterate once" << std::endl
-		<< "2: Iterate \"n\" times" << std::endl
-		<< "3: Print map seed to user" << std::endl
-		<< "4: Exit program" << std::endl
-		;
-	std::cin >> menuChoice;
-
-	switch (menuChoice)
-	{
-	case(1):
-		{
-			
-			
-			break;
-		}
-	
-	case(2):
-		{
-			std::cout << "something 2";
-			
-			break;
-		}
-
-	case(3):
-		{
-			std::cout << "something 3";
-
-			break;
-		}
-
-	case(4):
-		{
-
-
-			break;
-		}
-
-	default:
-		{
-			std::cout << "Invalid menu input";
-		}
-	}
-	*/
+	CM::generateGameMap(&gamestateString, userHeightInput, userWidthInput, gameMap0);
 
 	unsigned short continueIterationsToDo = 0;
-
 	CM::userContinueIterations(continueIterationsToDo);
 
 	int mapHeightIndexing = userHeightInput - 1,
@@ -134,7 +84,10 @@ int main()
 
 	if (userChoiceToPrintSeed)
 	{
-		std::cout << CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? gameMap0 : gameMap1));
+		ST::MyString requestedSeed =
+			CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? gameMap0 : gameMap1));
+
+		std::cout << requestedSeed.asStr();
 	}
 
 	std::cout << std::endl << std::endl;

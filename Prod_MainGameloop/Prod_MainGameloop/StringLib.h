@@ -17,8 +17,9 @@ namespace ST
 
 		int length();
 		char* asStr();
-		void newStr(char*, int);
+		void newStr(char*);
 		void getNewStr(const char[MAX_STR_LENGTH]);
+		void append(const char charToAppend);
 
 	private:
 		char* storedString,

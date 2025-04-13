@@ -12,7 +12,7 @@ namespace CM
 	// Used in createGamestate to keep track of the string's length and will be used for the checksum
 	int lengthOfGamestateString;
 
-	std::string outputString;
+	char* outputString[];
 
 	/*
 	Example input string for a map using base 64 (A-Z)(a-z)(0-9)(+)(/)
@@ -25,19 +25,21 @@ namespace CM
 	(ZZZ) is a checksum for the length of the string and is the total length of the string
 	*/
 
-	unsigned int createSeed(const std::string& userInput)
+	unsigned int createSeed(char* userInput)
 	{
 		// Just picked a random prime number
 		unsigned int seed = 907;
 
-		for (char character : userInput)
+		while (*userInput != '\0')
 		{
-			seed = seed + character;
+			seed = seed + *userInput;
+
+			userInput++;
 		}
 		return seed;
 	}
 
-	std::string createGamestate(unsigned int seed, int height, int width)
+	ST::MyString* createGamestate(ST::MyString *gamestateString,unsigned int seed, int height, int width)
 	{
 		int totalBoolsRequired = height * width,
 			currentSeedValue;
@@ -46,24 +48,25 @@ namespace CM
 
 		srand(seed);
 
-		for (int index = 0; index < (totalBoolsRequired / 6); index++)
+		int index = 0;
+		for (index = 0; index < (totalBoolsRequired / 6); index++)
 		{
 			currentSeedValue = rand() % 64;
 
-			outputString.push_back(B64::base64ValToChar[currentSeedValue]);
+			gamestateString->append(B64::base64ValToChar[currentSeedValue]);
 		}
 
 		if (0 < remainder)
 		{
 			// Break character
-			outputString.push_back('!');
+			gamestateString->append('!');
 
 			// This is the number of bits remaining to be read
-			outputString.push_back(B64::base64ValToChar[remainder]);
+			gamestateString->append(B64::base64ValToChar[remainder]);
 
 			currentSeedValue = rand() % 64;
 
-			outputString.push_back(B64::base64ValToChar[currentSeedValue]);
+			gamestateString->append(B64::base64ValToChar[currentSeedValue]);
 
 			lengthOfGamestateString = totalBoolsRequired / 6 + 3;
 		}
@@ -71,12 +74,10 @@ namespace CM
 		else
 			lengthOfGamestateString = totalBoolsRequired / 6;
 
-		// convert lengthOfGamestateString to base 64
-
-		return outputString;
+		return gamestateString;
 	}
 
-	std::string convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap)
+	ST::MyString convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap)
 	{
 		int currentCol = 0,
 			currentRow = 0,
@@ -86,11 +87,13 @@ namespace CM
 
 		int* mapPtr = &gameMap[currentRow].front();
 
-		std::string stringToBeEncoded;
+		char* stringToBeEncoded[ST::MAX_STR_LENGTH] = {};
+
+		ST::MyString encodedString;
 		
 		while (encodingMap)
 		{
-			for (int index = 0; index < 5; index++)
+			for (int index = 0; ++index < 5;)
 			{
 				if (&gameMap[currentRow].back() < mapPtr)
 				{
@@ -98,7 +101,7 @@ namespace CM
 					{
 						encodingMap = false;
 
-						stringToBeEncoded.push_back('!');
+						encodedString.append('!');
 
 						break;
 					}
@@ -113,30 +116,29 @@ namespace CM
 				mapPtr++;
 			}
 
-			stringToBeEncoded.push_back(B64::base64ValToChar[runningTotalToDecode]);
+			encodedString.append(B64::base64ValToChar[runningTotalToDecode]);
 
 			runningTotalToDecode = 0;
 		}
 
-		return stringToBeEncoded;
+		return encodedString;
 	}
 
-	void convertBase64StrToMap(const std::string& userInput, int height, int width, std::vector<std::vector<int>>& gameMap)
+	void convertBase64StrToMap(ST::MyString *gamestateString, int height, int width, std::vector<std::vector<int>>& gameMap)
 	{
 		int currentCol = 0,
 			currentRow = 0;
 
-		unsigned int seed = createSeed(userInput);
+		unsigned int seed = createSeed(gamestateString->asStr());
 
 		int* mapPtr = &gameMap[currentRow].front();
 
-		std::string encodedString = createGamestate(seed, height, width);
+		gamestateString = createGamestate(gamestateString, seed, height, width);
 
-		char* charPtr = &encodedString.front();
+		char* charPtr = gamestateString->asStr();
 
-		for (;charPtr < &encodedString.back(); charPtr++)
+		while ((currentRow < height) && (currentRow < width))
 		{
-
 			// Break character if less than 6 map values remain to be set
 			if (*charPtr == '!')
 			{
@@ -184,11 +186,16 @@ namespace CM
 						currentRow++;
 
 						currentCol = 0;
+
+						if (currentRow == height) break;
 					}
 
 					mapPtr = &gameMap[currentRow].front();
 				}
 			}
+
+			// End of loop, iterate character pointer
+			charPtr++;
 		}
 	}
 
@@ -207,20 +214,21 @@ namespace CM
 		}
 	}
 
-	void generateGameMap(std::string userInputForSeed, int userInputHeight, int userInputWidth, std::vector<std::vector<int>>& mapToInitialize)
+	void generateGameMap(ST::MyString *gamestateString, int userInputHeight,
+		int userInputWidth, std::vector<std::vector<int>>& mapToInitialize)
 	{
-		// std::vector<std::vector<int>> gameMap(userInputHeight, std::vector<int>(userInputWidth, 0));
-
-		convertBase64StrToMap(userInputForSeed, userInputHeight, userInputWidth, mapToInitialize);
+		convertBase64StrToMap(gamestateString, userInputHeight, userInputWidth, mapToInitialize);
 
 		displayMap(mapToInitialize);
 	}
 
 	void userContinueIterations(unsigned short& numberOfIterations)
 	{
-		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to iterate (0 to terminate the simulation): ", 0, 4000);
+		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"
+			" iterate (0 to terminate the simulation) : ", 0, 4000);
 	}
 
+	// testing function
 	void printValuesFromMaps(char character, int number, int range)
 	{
 		for (int itteration = number; itteration <= number + range; itteration++)

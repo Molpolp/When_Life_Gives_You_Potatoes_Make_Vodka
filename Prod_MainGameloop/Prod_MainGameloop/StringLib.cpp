@@ -10,11 +10,9 @@ Version: 1.0
 
 namespace ST
 {
-	const int MAX_STR_SIZE = 500;
-
 	MyString::MyString()
 	{
-		storedString = nullptr;
+		storedString = new char[0];
 		strLen = 0;
 	}
 
@@ -52,7 +50,7 @@ namespace ST
 		return strCopy;
 	}
 
-	void MyString::newStr(char* charArr, int strLen)
+	void MyString::newStr(char* charArr)
 	{
 		delete[] storedString;
 
@@ -74,7 +72,32 @@ namespace ST
 
 		setStrLen(inputCharArr);
 
-		newStr(inputCharArr, strLen);
+		newStr(inputCharArr);
+	}
+
+	void MyString::append(const char charToAppend)
+	{
+		char* newArr = new char[strLen + 5];
+
+		int index = 0;
+		for (index = 0; index <= strLen; index++)
+		{
+			newArr[index] = storedString[index];
+		}
+
+		for (int index = 0; index < nextSubStrIndex - 1; index++)
+		{
+			delete[] subStrsToCleanup[index];
+		}
+
+		delete[] storedString;
+
+		newArr[index - 1] = charToAppend;
+		newArr[index] = '\0';
+
+		storedString = newArr;
+
+		strLen++;
 	}
 
 	void MyString::setStrLen()

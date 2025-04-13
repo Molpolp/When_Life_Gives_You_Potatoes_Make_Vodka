@@ -48,7 +48,7 @@ namespace VI
 	}
 
 	// Used to verify integer input with variable prompt, no range restrictions
-	int verifyIntInput(std::string inputPrompt)
+	int verifyIntInput(const char inputPrompt[])
 	{
 		static float toBeValidatedUserInput;
 		static int intUserInput;
@@ -86,7 +86,7 @@ namespace VI
 	}
 
 	// Used to verify integer input with variable prompt, with range restrictions
-	int verifyIntInput(std::string inputPrompt, int minValue, int maxValue)
+	int verifyIntInput(const char inputPrompt[], int minValue, int maxValue)
 	{
 		static float toBeValidatedUserInput;
 		static int intUserInput;
@@ -128,7 +128,8 @@ namespace VI
 
 				else
 				{
-					std::cout << "IDK how this happened... error in Varify_Int_Input library in prompted function with range restrictions.\n";
+					std::cout << "IDK how this happened... error in Varify_Int_Input"
+						"library in prompted function with range restrictions.\n";
 				}
 			}
 
@@ -139,14 +140,14 @@ namespace VI
 		}
 
 		// Fix for dangling newline char
-		if (std::cin.peek() == 10)
+		if (std::cin.peek() == '\n')
 			std::cin.ignore(1);
 
 		return intUserInput;
 	}
 
 	// Used to verify numeric input with variable prompt, with range restrictions
-	float verifyFloatInput(std::string inputPrompt, float minValue, float maxValue)
+	float verifyFloatInput(const char inputPrompt[], float minValue, float maxValue)
 	{
 		static float userInput;
 		static bool invalidUserInput;
@@ -180,7 +181,8 @@ namespace VI
 
 				else
 				{
-					std::cout << "IDK how this happened... error in \"Verify_Input\" library, in prompted float function with range restrictions.\n";
+					std::cout << "IDK how this happened... error in \"Verify_Input\""
+						"library, in prompted float function with range restrictions.\n";
 				}
 			}
 			else
@@ -193,7 +195,7 @@ namespace VI
 
 	// LettersOnly to be implimented
 	// Fix bools, they don't like being passed in tbh
-	char verifyCharInput(std::string inputPrompt, bool returnLower = true)
+	char verifyCharInput(const char inputPrompt[], bool returnLower = true)
 	{
 		static bool invalidUserInput;
 		static char userInput;
@@ -202,6 +204,7 @@ namespace VI
 
 		while (invalidUserInput)
 		{
+			std::cout << inputPrompt;
 			std::cin.get(userInput);
 
 			if (std::cin.fail())
@@ -236,7 +239,7 @@ namespace VI
 	}
 
 	// Used to create a string aka character array
-	char* verifyCharArrInput(std::string inputPrompt, const short arraySize)
+	char* verifyCharArrInput(const char inputPrompt[], const short arraySize)
 	{
 		static bool invalidUserInput;
 		char* arrayPtr = new char[arraySize + 1];
@@ -259,7 +262,8 @@ namespace VI
 
 				std::cin.ignore(1000, '\n');
 
-				std::cout << "Invalid input, please only enter strings less than " << arraySize << " characters long." << std::endl;
+				std::cout << "Invalid input, please only enter strings less than " 
+					<< arraySize << " characters long." << std::endl;
 
 				goto startLoop;
 			}
@@ -286,45 +290,5 @@ namespace VI
 			}
 		}
 		return arrayPtr;
-	}
-
-	// Assuming letters only currently for simplicity
-	std::string verifyStringInput(std::string inputPrompt)
-	{
-		static bool invalidUserInput;
-		static std::string userInput;
-
-		invalidUserInput = true;
-
-		while (invalidUserInput)
-		{
-			std::cout << inputPrompt;
-
-			std::getline(std::cin, userInput);
-
-			for (int index = 0; index < userInput.size(); index++)
-			{
-				if ((static_cast<int>(userInput[index]) != ' ') && (tolower(userInput[index]) < 'a') || 'z' < tolower(userInput[index]))
-				{
-					// Invalid input, non character ASCII value detected
-
-					std::cout << "Invalid input, please refrain from using special characters or numbers."
-						<< std::endl;
-
-					userInput.clear();
-
-					invalidUserInput = true;
-
-					break;
-				}
-
-				else
-				{
-					invalidUserInput = false;
-				}
-			}
-		}
-
-		return userInput;
 	}
 }

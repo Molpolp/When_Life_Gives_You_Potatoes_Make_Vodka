@@ -5,8 +5,8 @@
 #define CREATEMAP_H
 
 #include "VerifyInput.h"
+#include "StringLib.h"
 #include <iostream>
-#include <string>
 #include <bitset>
 #include <cstdlib>
 #include <vector>
@@ -21,20 +21,20 @@ namespace CM
 {
     extern int lengthOfGamestateString;
 
-    extern std::string outputString;
+    extern char* outputString[];
 
-    unsigned int createSeed(const std::string& userInput);
+    unsigned int createSeed(const char* userInput);
 
-    std::string createGamestate(unsigned int seed, int height, int width);
+    ST::MyString* createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width);
 
-    std::string convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap);
+    ST::MyString convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap);
 
-    void convertBase64StrToMap(const std::string& userInput, int height, int width,
+    void convertBase64StrToMap(ST::MyString *gamestateString, int height, int width,
         std::vector<std::vector<int>>& gameMap);
 
     void displayMap(std::vector<std::vector<int>>& gameMap);
 
-    void generateGameMap(std::string userInputForSeed, int userInputHeight, int userInputWidth,
+    void generateGameMap(ST::MyString *gamestateString, int userInputHeight, int userInputWidth,
         std::vector<std::vector<int>>& mapToInitialize);
 
     void userContinueIterations(unsigned short& numberOfIterations);

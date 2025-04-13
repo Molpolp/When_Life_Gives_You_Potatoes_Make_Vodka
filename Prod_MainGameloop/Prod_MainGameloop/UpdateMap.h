@@ -4,7 +4,6 @@
 #ifndef UPDATEMAP_H
 #define UPDATEMAP_H
 
-
 #include <iostream>
 #include <vector>
 #include <cstdlib>

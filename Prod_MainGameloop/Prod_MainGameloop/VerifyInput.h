@@ -4,26 +4,26 @@
 #ifndef VERIFY_INPUT_H
 #define VERIFY_INPUT_H
 
+
 #include <iostream>
 #include <vector>
-#include <string>
+#include "StringLib.h"
+
 
 // VI stands for Verify Input
 namespace VI
 {
 	int verifyIntInput(int inputItteration);
 
-	int verifyIntInput(std::string inputPrompt);
+	int verifyIntInput(const char inputPrompt[]);
 
-	int verifyIntInput(std::string inputPrompt, int minValue, int maxValue);
+	int verifyIntInput(const char inputPrompt[], int minValue, int maxValue);
 
-	float verifyFloatInput(std::string inputPrompt, float minValue, float maxValue);
+	float verifyFloatInput(const char inputPrompt[], float minValue, float maxValue);
 
-	char verifyCharInput(std::string inputPrompt, bool returnLower);
+	char verifyCharInput(const char inputPrompt[], bool returnLower);
 
-	char* verifyCharArrInput(std::string inputPrompt, const short arraySize);
-
-	std::string verifyStringInput(std::string inputPrompt);
+	char* verifyCharArrInput(const char inputPrompt[], const short arraySize);
 }
 
 #endif
