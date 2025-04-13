@@ -193,8 +193,7 @@ namespace VI
 
 	// LettersOnly to be implimented
 	// Fix bools, they don't like being passed in tbh
-	char verifyCharInput(std::string inputPrompt, bool lettersOnly = true,
-		bool choiceToReturnUpperOrLower = true, bool returnLower = true)
+	char verifyCharInput(std::string inputPrompt, bool returnLower = true)
 	{
 		static bool invalidUserInput;
 		static char userInput;
@@ -214,7 +213,7 @@ namespace VI
 				std::cout << "Invalid input, something entered caused cin.get to fail." << std::endl;
 			}
 
-			else if (tolower(userInput) < 97 || 122 < tolower(userInput))
+			else if (tolower(userInput) < 'a' || 'z' < tolower(userInput))
 			{
 				std::cin.clear();
 
@@ -229,32 +228,30 @@ namespace VI
 			}
 		}
 
-		if (choiceToReturnUpperOrLower)
-		{
-			if (returnLower)
-				return tolower(userInput);
-
-			else
-				return toupper(userInput);
-		}
+		if (returnLower)
+			return tolower(userInput);
 
 		else
-			return userInput;
+			return toupper(userInput);
 	}
 
 	// Used to create a string aka character array
-	char* verifyCharInput(std::string inputPrompt)
+	char* verifyCharArrInput(std::string inputPrompt, const short arraySize)
 	{
-		const static short SIZE = 20;
 		static bool invalidUserInput;
-		char* arrayPtr = new char[SIZE];
+		char* arrayPtr = new char[arraySize + 1];
 
 		invalidUserInput = true;
 
+		// If arraySize is 0 we just return the pointer
+		if (!arraySize) return arrayPtr;
+
 		while (invalidUserInput)
 		{
+			startLoop:
+
 			std::cout << inputPrompt;
-			std::cin.getline(arrayPtr, SIZE);
+			std::cin.getline(arrayPtr, arraySize);
 
 			if (std::cin.fail())
 			{
@@ -262,10 +259,12 @@ namespace VI
 
 				std::cin.ignore(1000, '\n');
 
-				std::cout << "Invalid input, something entered caused cin.get to fail." << std::endl;
+				std::cout << "Invalid input, please only enter strings less than " << arraySize << " characters long." << std::endl;
+
+				goto startLoop;
 			}
 
-			for (int index = 0; (index < SIZE) || (arrayPtr[index] == 0); index++)
+			for (int index = 0; index < arraySize; index++)
 			{
 				if (arrayPtr[index] == '\0')
 				{
@@ -274,7 +273,7 @@ namespace VI
 					break;
 				}
 
-				if ((arrayPtr[index] != 32) && (tolower(arrayPtr[index]) < 97 || 122 < tolower(arrayPtr[index])))
+				if ((arrayPtr[index] != ' ') && (tolower(arrayPtr[index]) < 'a' || 'z' < tolower(arrayPtr[index])))
 				{
 					std::cin.clear();
 
@@ -305,7 +304,7 @@ namespace VI
 
 			for (int index = 0; index < userInput.size(); index++)
 			{
-				if ((static_cast<int>(userInput[index]) != 32) && (tolower(userInput[index]) < 97) || 122 < tolower(userInput[index]))
+				if ((static_cast<int>(userInput[index]) != ' ') && (tolower(userInput[index]) < 'a') || 'z' < tolower(userInput[index]))
 				{
 					// Invalid input, non character ASCII value detected
 

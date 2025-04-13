@@ -19,10 +19,9 @@ namespace VI
 
 	float verifyFloatInput(std::string inputPrompt, float minValue, float maxValue);
 
-	char verifyCharInput(std::string inputPrompt, bool lettersOnly,
-		bool choiceToReturnUpperOrLower, bool returnLower);
+	char verifyCharInput(std::string inputPrompt, bool returnLower);
 
-	char* verifyCharInput(std::string inputPrompt);
+	char* verifyCharArrInput(std::string inputPrompt, const short arraySize);
 
 	std::string verifyStringInput(std::string inputPrompt);
 }
