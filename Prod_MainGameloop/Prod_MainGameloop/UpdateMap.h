@@ -9,13 +9,15 @@
 #include <cstdlib>
 #include "Base64Map.h"
 #include "CreateMap.h"
-#include <Windows.h>
 
 #ifdef _WIN32
 	#define CLEAR "cls"
+	#define SLEEP_AVAIL "TRUE"
+	#include <Windows.h>
 
 #else
 	#define CLEAR "clear"
+	#define SLEEP_AVAIL "FALSE"
 
 #endif
 

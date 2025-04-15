@@ -23,42 +23,37 @@ Version: 1.0
 #include "UpdateMap.h"
 #include "Base64Map.h"
 #include "VerifyInput.h"
+#include "StringLib.h"
+#include "MapDataStruct.h"
 #include <cstdlib>
 
+
+void mainMenu(MD::MapData *mapData);
 
 int main()
 {
 	B64::initializeBase64Maps();
 
-	//std::string gamestateString;
-
 	ST::MyString gamestateString;
 
-	int userHeightInput,
-		userWidthInput;
+	MD::MapData mapData(&gamestateString);
 
-	char* userSeedInput = VI::verifyCharArrInput(
-		{ "Please input some string for a seed (Any input is valid): " }, ST::MAX_STR_LENGTH);
+	START_OF_GAME:
 
-	gamestateString.newStr(userSeedInput);
-
-	userHeightInput = VI::verifyIntInput("Please input an int value for the map's height: ", 5, 75);
-	userWidthInput = VI::verifyIntInput("Please input an int value for the map's width: ", 5, 75);
-
-	std::cout << std::endl << std::endl;
+	mainMenu(&mapData);
 
 	// init game maps
-	std::vector<std::vector<int>> gameMap0(userHeightInput, std::vector<int>(userWidthInput, 0));
-	std::vector<std::vector<int>> gameMap1(userHeightInput, std::vector<int>(userWidthInput, 0));
+	std::vector<std::vector<int>> gameMap0(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
+	std::vector<std::vector<int>> gameMap1(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
 
 	// Generates our game map and prints it to the console
-	CM::generateGameMap(&gamestateString, userHeightInput, userWidthInput, gameMap0);
+	CM::generateGameMap(&mapData, gameMap0);
 
 	unsigned short continueIterationsToDo = 0;
 	CM::userContinueIterations(continueIterationsToDo);
 
-	int mapHeightIndexing = userHeightInput - 1,
-		mapWidthIndexing = userWidthInput - 1,
+	int mapHeightIndexing = mapData.mapHeight - 1,
+		mapWidthIndexing = mapData.mapWidth - 1,
 		generationItteration = 0
 		;
 
@@ -84,17 +79,60 @@ int main()
 
 	if (userChoiceToPrintSeed)
 	{
-		ST::MyString requestedSeed =
-			CM::convertMapToBase64Str(userHeightInput, (generationItteration % 2 ? gameMap0 : gameMap1));
+		ST::MyString requestedSeed;
+		
+		CM::convertMapToBase64Str(&requestedSeed, mapData.mapHeight, mapData.mapWidth,
+			(generationItteration % 2 ? gameMap1 : gameMap0));
 
 		std::cout << requestedSeed.asStr();
 	}
 
 	std::cout << std::endl << std::endl;
 
-	// Not sure why return 0 isn't working to exit the program, this works tho.
-	if (continueIterationsToDo == 0)
+	return 0;
+}
+
+void mainMenu(MD::MapData *mapData)
+{
+	std::cout << "\tConway's Game of Life!\n"
+		<< "\t______________________\n\n"
+		<< "(0) I do not have a seed and would like to generate a random gamemap.\n"
+		<< "(1) I have a seed from a previous simulation I would like to use.\n"
+		<< "(2) Terminate program.\n\n";
+
+	int userInput = VI::verifyIntInput("Please enter your choice: ", 0, 2);
+
+	switch (userInput)
+	{
+	case NO_SEED:
+	{
+		mapData->initMapData();
+
+		break;
+	}
+
+	case USER_HAS_SEED:
+	{
+		if (mapData->initMapData(USER_HAS_SEED) == INVALID_SEED_INPUT)
+		{
+			std::cout << "Invalid seed input, please input a valid seed or initialize a random gamemap.\n\n";
+
+			return mainMenu(mapData);
+		}
+
+		break;
+	}
+
+	case REQUESTED_EXIT:
+	{
 		std::exit(0);
 
-	return 0;
+		break;
+	}
+
+	default:
+	{
+		throw std::invalid_argument("Invalid input for menu somehow made it through input validation.");
+	}
+	}
 }

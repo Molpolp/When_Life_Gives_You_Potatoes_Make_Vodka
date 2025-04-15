@@ -6,6 +6,7 @@
 
 #include "VerifyInput.h"
 #include "StringLib.h"
+#include "MapDataStruct.h"
 #include <iostream>
 #include <bitset>
 #include <cstdlib>
@@ -19,27 +20,21 @@
 
 namespace CM
 {
-    extern int lengthOfGamestateString;
-
-    extern char* outputString[];
-
     unsigned int createSeed(const char* userInput);
 
-    ST::MyString* createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width);
+    void writeEncodedDimensions(ST::MyString* encodedString, int height, int width);
 
-    ST::MyString convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap);
+    void convertMapToBase64Str(ST::MyString *encodedString,int height, int width, std::vector<std::vector<int>>& gameMap);
 
-    void convertBase64StrToMap(ST::MyString *gamestateString, int height, int width,
-        std::vector<std::vector<int>>& gameMap);
+    void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width);
+
+    void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<int>>& gameMap);
 
     void displayMap(std::vector<std::vector<int>>& gameMap);
 
-    void generateGameMap(ST::MyString *gamestateString, int userInputHeight, int userInputWidth,
-        std::vector<std::vector<int>>& mapToInitialize);
+    void generateGameMap(MD::MapData *mapData, std::vector<std::vector<int>>& mapToInitialize);
 
     void userContinueIterations(unsigned short& numberOfIterations);
-
-    void printValuesFromMaps(char character, int number, int range);
 }
 
 #endif

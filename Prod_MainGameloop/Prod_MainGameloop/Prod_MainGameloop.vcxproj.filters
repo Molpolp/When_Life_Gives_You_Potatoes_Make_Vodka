@@ -33,6 +33,9 @@
     <ClCompile Include="StringLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapDataStruct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base64Map.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDataStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

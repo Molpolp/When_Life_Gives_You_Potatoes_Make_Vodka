@@ -9,20 +9,16 @@ Version: 1.0
 
 namespace CM
 {
-	// Used in createGamestate to keep track of the string's length and will be used for the checksum
-	int lengthOfGamestateString;
-
-	char* outputString[];
-
 	/*
 	Example input string for a map using base 64 (A-Z)(a-z)(0-9)(+)(/)
-	(YY)(XX)(ZZZ)(FFFFFFFFF...FF!F)
+	(YY)(XX)(ZZ)(FFFFFFFFF...FF!F)
 	(!RF) is included if 0 < (width * height) % 6
 		R is the remainder count
 		F is the base 64 char containing the remainder values
 	(YY) is the encoded height of the map
 	(XX) is the encoded width of the map
-	(ZZZ) is a checksum for the length of the string and is the total length of the string
+	(ZZ) is a checksum for the length of the string and is the total length of the string
+		   is read left to right, firstLetter is (total / 64) second letter is (total - firstLetter * 64)
 	*/
 
 	unsigned int createSeed(char* userInput)
@@ -39,10 +35,159 @@ namespace CM
 		return seed;
 	}
 
-	ST::MyString* createGamestate(ST::MyString *gamestateString,unsigned int seed, int height, int width)
+	void createAndWriteChecksum(ST::MyString *encodedString)
+	{
+		char* copyToCheck = encodedString->asStr(),
+			checksumChars[3];
+
+		// Counting the two characters from the checksum that will be added
+		int totalLength = 2;
+
+		while (*copyToCheck != '\0')
+		{
+			totalLength++;
+
+			copyToCheck++;
+		}
+
+		if (totalLength > 63)
+		{
+			int multipleOf64 = totalLength / 64;
+
+			checksumChars[0] = B64::base64ValToChar[multipleOf64];
+
+			totalLength -= 64 * multipleOf64;
+
+			checksumChars[1] = B64::base64ValToChar[totalLength];
+		}
+
+		else
+		{
+			checksumChars[0] = 'A';
+
+			checksumChars[1] = B64::base64ValToChar[totalLength];
+		}
+
+		checksumChars[2] = '\0';
+
+		encodedString->insert(checksumChars, 2, 4);
+	}
+
+	void writeEncodedDimensions(ST::MyString* encodedString, int height, int width)
+	{
+		int heightRemainder = 0,
+			widthRemainder = 0;
+
+		if (height > 63)
+		{
+			heightRemainder = height % 63;
+
+			// 63 in base 64
+			encodedString->append('/');
+
+			encodedString->append(B64::base64ValToChar[heightRemainder]);
+		}
+
+		else
+		{
+			encodedString->append(B64::base64ValToChar[height]);
+
+			// 0 in base 64
+			encodedString->append('A');
+		}
+
+		if (width > 63)
+		{
+			widthRemainder = width % 63;
+
+			// 63 in base 64
+			encodedString->append('/');
+
+			encodedString->append(B64::base64ValToChar[widthRemainder]);
+		}
+
+		else
+		{
+			encodedString->append(B64::base64ValToChar[width]);
+
+			// 0 in base 64
+			encodedString->append('A');
+		}
+
+	}
+
+	void convertMapToBase64Str(ST::MyString* encodedString, int height, int width, std::vector<std::vector<int>>& gameMap)
+	{
+		int bitsRead = 0,
+			maxBitsToRead = height * width,
+			currentRow = 0,
+			runningTotalToDecode = 0;
+
+		writeEncodedDimensions(encodedString, height, width);
+
+		bool encodingMap = true;
+
+		int* mapPtr = &gameMap[currentRow].front();
+
+		char* stringToBeEncoded[ST::MAX_STR_LENGTH] = {};
+
+		while (encodingMap)
+		{
+			for (int index = 0; index < 6; index++)
+			{
+
+				if ((currentRow < height) && (& gameMap[currentRow].back() < mapPtr))
+				{
+					if (currentRow == height - 1)
+					{
+						encodingMap = false;
+
+						encodedString->append('!');
+
+						int remainder = (height * width) % 6;
+
+						encodedString->append(B64::base64ValToChar[remainder]);
+
+						break;
+					}
+
+					if (bitsRead == maxBitsToRead)
+					{
+						encodingMap = false;
+
+						goto  terminatingLoop;
+					}
+
+					currentRow++;
+
+					mapPtr = &gameMap[currentRow].front();
+				}
+
+				runningTotalToDecode += (*mapPtr == 1 ? std::pow(2, index) : 0);
+
+				bitsRead++;
+
+				if (encodingMap) mapPtr++;
+			}
+			
+			terminatingLoop:
+
+			if (runningTotalToDecode < 64)
+				encodedString->append(B64::base64ValToChar[runningTotalToDecode]);
+
+			else throw std::out_of_range("runningTotalToDecode in convertMapToBase64String out of range.");
+
+			runningTotalToDecode = 0;
+		}
+
+		createAndWriteChecksum(encodedString);
+	}
+
+	void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width)
 	{
 		int totalBoolsRequired = height * width,
-			currentSeedValue;
+			currentSeedValue = 0,
+			lengthOfGamestateString = 0;
 
 		short remainder = totalBoolsRequired % 6;
 
@@ -73,71 +218,18 @@ namespace CM
 
 		else
 			lengthOfGamestateString = totalBoolsRequired / 6;
-
-		return gamestateString;
 	}
 
-	ST::MyString convertMapToBase64Str(int height, std::vector<std::vector<int>>& gameMap)
-	{
-		int currentCol = 0,
-			currentRow = 0,
-			runningTotalToDecode= 0;
-
-		bool encodingMap = true;
-
-		int* mapPtr = &gameMap[currentRow].front();
-
-		char* stringToBeEncoded[ST::MAX_STR_LENGTH] = {};
-
-		ST::MyString encodedString;
-		
-		while (encodingMap)
-		{
-			for (int index = 0; ++index < 5;)
-			{
-				if (&gameMap[currentRow].back() < mapPtr)
-				{
-					if (currentRow == height - 1)
-					{
-						encodingMap = false;
-
-						encodedString.append('!');
-
-						break;
-					}
-
-					currentRow++;
-
-					mapPtr = &gameMap[currentRow].front();
-				}
-
-				runningTotalToDecode += (*mapPtr == 1 ? std::pow(2, index) : 0);
-
-				mapPtr++;
-			}
-
-			encodedString.append(B64::base64ValToChar[runningTotalToDecode]);
-
-			runningTotalToDecode = 0;
-		}
-
-		return encodedString;
-	}
-
-	void convertBase64StrToMap(ST::MyString *gamestateString, int height, int width, std::vector<std::vector<int>>& gameMap)
+	void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<int>>& gameMap)
 	{
 		int currentCol = 0,
 			currentRow = 0;
 
-		unsigned int seed = createSeed(gamestateString->asStr());
-
 		int* mapPtr = &gameMap[currentRow].front();
 
-		gamestateString = createGamestate(gamestateString, seed, height, width);
+		char* charPtr = mapData->ptrGamestateStr->asStr();
 
-		char* charPtr = gamestateString->asStr();
-
-		while ((currentRow < height) && (currentRow < width))
+		while ((currentRow < mapData->mapHeight) && (currentRow < mapData->mapWidth))
 		{
 			// Break character if less than 6 map values remain to be set
 			if (*charPtr == '!')
@@ -181,13 +273,13 @@ namespace CM
 				{
 					*mapPtr = bits[index];
 
-					if (currentCol == width - 1)
+					if (currentCol == mapData->mapWidth - 1)
 					{
 						currentRow++;
 
 						currentCol = 0;
 
-						if (currentRow == height) break;
+						if (currentRow == mapData->mapHeight) break;
 					}
 
 					mapPtr = &gameMap[currentRow].front();
@@ -199,6 +291,7 @@ namespace CM
 		}
 	}
 
+	// TODO make this print better
 	void displayMap(std::vector<std::vector<int>>& gameMap)
 	{
 		for (const auto& currentRow : gameMap)
@@ -214,10 +307,29 @@ namespace CM
 		}
 	}
 
-	void generateGameMap(ST::MyString *gamestateString, int userInputHeight,
-		int userInputWidth, std::vector<std::vector<int>>& mapToInitialize)
+	void generateGameMap(MD::MapData *mapData, std::vector<std::vector<int>>& mapToInitialize)
 	{
-		convertBase64StrToMap(gamestateString, userInputHeight, userInputWidth, mapToInitialize);
+
+		switch (mapData->initWithSeed)
+		{
+		case NO_SEED:
+		{
+			unsigned int seed = createSeed(mapData->ptrGamestateStr->asStr());
+
+			createGamestate(mapData->ptrGamestateStr, seed, mapData->mapHeight, mapData->mapWidth);
+
+			convertBase64StrToMap(mapData, mapToInitialize);
+
+			break;
+		}
+
+		case USER_HAS_SEED:
+		{
+			convertBase64StrToMap(mapData, mapToInitialize);
+
+			break;
+		}
+		}
 
 		displayMap(mapToInitialize);
 	}
@@ -225,20 +337,7 @@ namespace CM
 	void userContinueIterations(unsigned short& numberOfIterations)
 	{
 		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"
-			" iterate (0 to terminate the simulation) : ", 0, 4000);
+			" iterate (0 to terminate the simulation): ", 0, 4000);
 	}
 
-	// testing function
-	void printValuesFromMaps(char character, int number, int range)
-	{
-		for (int itteration = number; itteration <= number + range; itteration++)
-		{
-			std::cout << B64::base64ValToChar[itteration]
-				<< " --> "
-				<< B64::base64ValToChar[character]
-				<< std::endl << std::endl
-				;
-			character++;
-		}
-	}
 }

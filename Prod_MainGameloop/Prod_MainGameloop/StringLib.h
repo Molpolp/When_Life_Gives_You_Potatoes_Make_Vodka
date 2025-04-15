@@ -3,12 +3,13 @@
 #ifndef STRING_LIB
 #define STRING_LIB
 
+#include <stdexcept>
 #include "VerifyInput.h"
 
 
 namespace ST
 {
-	const int MAX_STR_LENGTH = 500;
+	const int MAX_STR_LENGTH = 4096;
 
 	struct MyString
 	{
@@ -19,7 +20,8 @@ namespace ST
 		char* asStr();
 		void newStr(char*);
 		void getNewStr(const char[MAX_STR_LENGTH]);
-		void append(const char charToAppend);
+		void append(char charToAppend);
+		void insert(char charsToInsert[MAX_STR_LENGTH], int numberOfCharsToInsert, int indexToInsertChars);
 
 	private:
 		char* storedString,
@@ -28,6 +30,7 @@ namespace ST
 		int strLen,
 			nextSubStrIndex = 0;
 
+		bool isStrValidLen(char arrToCheck[MAX_STR_LENGTH], int lengthToValidate);
 		void setStrLen();
 		void setStrLen(char*);
 	};

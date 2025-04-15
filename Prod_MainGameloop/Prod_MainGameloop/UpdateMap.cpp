@@ -6,14 +6,6 @@ Version: 1.0
 ***************************************/
 #include "UpdateMap.h"
 
-#ifdef _WIN32
-	#define CLEAR "cls"
-
-#else
-	#define CLEAR "clear"
-
-#endif
-
 
 namespace UM
 {
@@ -22,7 +14,6 @@ namespace UM
 		;
 
 	// Counts the number of alive neighbors a cell has
-	// TODO: Fix this function, make it legable 
 	int getTotalNeighbors(int boardHeight, int boardWidth, int& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
 		std::vector<std::vector<int>>& mapToParse)
 	{
@@ -131,6 +122,7 @@ namespace UM
 
 	void clearScreen()
 	{
+		if (SLEEP_AVAIL == "TRUE") Sleep(1000);
 		system(CLEAR);
 	}
 
@@ -138,7 +130,6 @@ namespace UM
 	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
 		std::vector<std::vector<int>>& map0, std::vector<std::vector<int>>& map1)
 	{
-		Sleep(1000);
 		clearScreen();
 
 		if (generationItteration % 2 == 0)

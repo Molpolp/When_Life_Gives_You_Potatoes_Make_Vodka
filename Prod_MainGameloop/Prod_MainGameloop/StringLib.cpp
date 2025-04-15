@@ -16,7 +16,7 @@ namespace ST
 		strLen = 0;
 	}
 
-	MyString::~MyString()
+	MyString::~MyString()	
 	{
 		delete[] storedString;
 
@@ -50,11 +50,23 @@ namespace ST
 		return strCopy;
 	}
 
+	// NOTE: If the passed in array is dynamically allocated we do NOT account for that here
 	void MyString::newStr(char* charArr)
 	{
 		delete[] storedString;
 
-		storedString = charArr;
+		// Get our new string length and update strLen with it
+		setStrLen(charArr);
+
+		storedString = new char[strLen + 1];
+
+		int index = 0;
+
+		do
+		{
+			storedString[index] = charArr[index];
+
+		} while (index++ < strLen);
 
 		for (int index = 0; index < nextSubStrIndex - 1; index++)
 		{
@@ -75,7 +87,7 @@ namespace ST
 		newStr(inputCharArr);
 	}
 
-	void MyString::append(const char charToAppend)
+	void MyString::append(char charToAppend)
 	{
 		char* newArr = new char[strLen + 5];
 
@@ -98,6 +110,78 @@ namespace ST
 		storedString = newArr;
 
 		strLen++;
+	}
+
+	void MyString::insert(char charsToInsert[MAX_STR_LENGTH], int numberOfCharsToInsert, int indexToInsertChars)
+	{
+		bool validStrInput = isStrValidLen(charsToInsert, numberOfCharsToInsert);
+
+		if (validStrInput)
+		{
+			int newStrIndex = 0,
+				oldStrIndex = 0,
+				newStrLen = strLen + numberOfCharsToInsert + 1,
+				endIndex = indexToInsertChars + numberOfCharsToInsert - 1;
+
+			// Buffer of +5 to prevent unexpected behavior
+			char* newStr = new char[newStrLen + 5];
+
+			while (newStrIndex < indexToInsertChars)
+			{
+				newStr[newStrIndex] = storedString[oldStrIndex];
+
+				newStrIndex++;
+				oldStrIndex++;
+			}
+
+			for (int insertIteration = 0; insertIteration < numberOfCharsToInsert; insertIteration++)
+			{
+				newStr[newStrIndex] = charsToInsert[insertIteration];
+
+				newStrIndex++;
+			}
+
+			while (newStrIndex < newStrLen)
+			{
+				newStr[newStrIndex] = storedString[oldStrIndex];
+
+				newStrIndex++;
+				oldStrIndex++;
+			}
+
+			for (int index = 0; index < nextSubStrIndex - 1; index++)
+			{
+				delete[] subStrsToCleanup[index];
+			}
+
+			nextSubStrIndex = 0;
+
+			delete[] storedString;
+
+			storedString = newStr;
+
+			setStrLen();
+		}
+
+		else
+		{
+			throw std::invalid_argument("Invalid str length given when attempting "
+				"MyString::insert function(Input char array too long)");
+		}
+
+	}
+
+	bool MyString::isStrValidLen(char arrToCheck[MAX_STR_LENGTH], int lengthToValidate)
+	{
+		bool validStrLen = false;
+
+		int index = 0;
+
+		for (index = 0; (arrToCheck[index] != '\0') && (index < MAX_STR_LENGTH); index++);
+
+		if (index == lengthToValidate) validStrLen = true;
+
+		return validStrLen;
 	}
 
 	void MyString::setStrLen()

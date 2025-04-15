@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include "StringLib.h"
+#include "Base64Map.h"
 
 
 // VI stands for Verify Input

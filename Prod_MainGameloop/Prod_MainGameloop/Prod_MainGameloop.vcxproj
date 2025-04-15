@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Base64Map.cpp" />
     <ClCompile Include="CreateMap.cpp" />
+    <ClCompile Include="MapDataStruct.cpp" />
     <ClCompile Include="Prod_MainGameloop.cpp" />
     <ClCompile Include="StringLib.cpp" />
     <ClCompile Include="UpdateMap.cpp" />
@@ -137,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Base64Map.h" />
     <ClInclude Include="CreateMap.h" />
+    <ClInclude Include="MapDataStruct.h" />
     <ClInclude Include="StringLib.h" />
     <ClInclude Include="UpdateMap.h" />
     <ClInclude Include="VerifyInput.h" />
