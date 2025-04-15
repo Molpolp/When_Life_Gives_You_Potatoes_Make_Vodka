@@ -9,7 +9,7 @@
 
 namespace ST
 {
-	const int MAX_STR_LENGTH = 4096;
+	const int MAX_STR_LENGTH = 1024;
 
 	struct MyString
 	{

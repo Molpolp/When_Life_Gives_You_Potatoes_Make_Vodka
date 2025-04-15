@@ -339,5 +339,4 @@ namespace CM
 		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"
 			" iterate (0 to terminate the simulation): ", 0, 4000);
 	}
-
 }

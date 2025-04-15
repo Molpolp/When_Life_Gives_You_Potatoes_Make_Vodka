@@ -1,7 +1,7 @@
 /***************************************
 Gregory Tuosto
 Final Project
-Date Completed: March 20, 2025
+Date Completed: April 15, 2025
 Description: This is a prototype for the backend of the project I'm working on for this class,
 			 It's a representation of Conway's Game of Life
 			 X is an alive cell
@@ -46,7 +46,7 @@ int main()
 	std::vector<std::vector<int>> gameMap0(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
 	std::vector<std::vector<int>> gameMap1(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
 
-	// Generates our game map and prints it to the console
+	// Initializes our game map with data and prints its firstt state
 	CM::generateGameMap(&mapData, gameMap0);
 
 	unsigned short continueIterationsToDo = 0;
@@ -57,7 +57,7 @@ int main()
 		generationItteration = 0
 		;
 
-	// Loop for displaying the game map
+	// Main simulation loop
 	while (continueIterationsToDo != 0)
 	{
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)

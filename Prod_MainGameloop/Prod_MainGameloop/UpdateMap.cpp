@@ -109,6 +109,25 @@ namespace UM
 	// Used to print out the current array
 	void printMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& gameMap)
 	{
+		ST::MyString* mapToPrint[75] = { {nullptr} };
+
+		for (int currentY = 0; currentY <= maxHeight; currentY++)
+		{
+			mapToPrint[currentY]->append('\n');
+
+			for (int currentX = 0; currentX <= maxWidth; currentX++)
+			{
+				mapToPrint[currentY]->append(gameMap[currentY][currentX]);
+				mapToPrint[currentY]->append(' ');
+			}
+		}
+
+		for (int index = 0; index < maxHeight; index++)
+		{
+			std::cout << mapToPrint[index]->asStr();
+		}
+
+		/*
 		for (int currentY = 0; currentY <= maxHeight; currentY++)
 		{
 			std::cout << "\n";
@@ -118,6 +137,7 @@ namespace UM
 				std::cout << gameMap[currentY][currentX] << " ";
 			}
 		}
+		*/
 	}
 
 	void clearScreen()
@@ -150,5 +170,4 @@ namespace UM
 			CM::displayMap(map0);
 		}
 	}
-
 }
