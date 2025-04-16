@@ -1,6 +1,5 @@
 // VerifyInput.h
 
-// Include guard
 #ifndef VERIFY_INPUT_H
 #define VERIFY_INPUT_H
 
@@ -9,7 +8,6 @@
 #include <vector>
 #include "StringLib.h"
 #include "Base64Map.h"
-
 
 // VI stands for Verify Input
 namespace VI

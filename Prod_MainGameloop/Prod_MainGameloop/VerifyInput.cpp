@@ -1,15 +1,15 @@
 /***************************************
 Gregory Tuosto
-Date Completed: March 20, 2025
+Date Completed: April 10, 2025
 Description: This library ensures valid input given specifications.
-Version: 1.0
+Version: 2.0
 ***************************************/
 
 #include "VerifyInput.h"
 
 namespace VI
 {
-	// Used in loop for verifying integers for an input list
+	// Used in loop for verifying integers for an input list.
 	int verifyIntInput(int inputItteration)
 	{
 		static float toBeValidatedUserInput;
@@ -47,7 +47,7 @@ namespace VI
 		return intUserInput;
 	}
 
-	// Used to verify integer input with variable prompt, no range restrictions
+	// Used to verify integer input with variable prompt, no range restrictions.
 	int verifyIntInput(const char inputPrompt[])
 	{
 		static float toBeValidatedUserInput;
@@ -85,7 +85,7 @@ namespace VI
 		return intUserInput;
 	}
 
-	// Used to verify integer input with variable prompt, with range restrictions
+	// Used to verify integer input with variable prompt, with range restrictions.
 	int verifyIntInput(const char inputPrompt[], int minValue, int maxValue)
 	{
 		static float toBeValidatedUserInput;
@@ -146,7 +146,7 @@ namespace VI
 		return intUserInput;
 	}
 
-	// Used to verify numeric input with variable prompt, with range restrictions
+	// Used to verify numeric input with variable prompt, with range restrictions.
 	float verifyFloatInput(const char inputPrompt[], float minValue, float maxValue)
 	{
 		static float userInput;
@@ -193,7 +193,7 @@ namespace VI
 		return userInput;
 	}
 
-	// LettersOnly to be implimented
+	// Currently letters only.
 	char verifyCharInput(const char inputPrompt[], bool returnLower = true)
 	{
 		static bool invalidUserInput;
@@ -237,7 +237,7 @@ namespace VI
 			return toupper(userInput);
 	}
 
-	// Used to create a string aka character array
+	// Used to create a string aka character array.
 	char* verifyCharArrInput(const char inputPrompt[], const short arraySize)
 	{
 		static bool invalidUserInput;

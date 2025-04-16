@@ -3,7 +3,6 @@
 #ifndef MAP_DATA_STRUCT_H
 #define MAP_DATA_STRUCT_H
 
-
 #include "StringLib.h"
 #include "Base64Map.h"
 

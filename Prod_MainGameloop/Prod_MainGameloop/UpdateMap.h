@@ -1,6 +1,5 @@
 // UpdateMap.h
 
-// include guard
 #ifndef UPDATEMAP_H
 #define UPDATEMAP_H
 
@@ -11,16 +10,12 @@
 #include "CreateMap.h"
 
 #ifdef _WIN32
-	#define CLEAR "cls"
-	#define SLEEP_AVAIL "TRUE"
 	#include <Windows.h>
 
 #else
-	#define CLEAR "clear"
-	#define SLEEP_AVAIL "FALSE"
+	#include <unistd.h>
 
 #endif
-
 
 namespace UM
 {

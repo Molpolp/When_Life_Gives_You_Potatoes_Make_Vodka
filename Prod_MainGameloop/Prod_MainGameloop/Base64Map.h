@@ -1,6 +1,5 @@
 // Base64Map.h
 
-// include guard
 #ifndef BASE64MAP_H
 #define BASE64MAP_H
 

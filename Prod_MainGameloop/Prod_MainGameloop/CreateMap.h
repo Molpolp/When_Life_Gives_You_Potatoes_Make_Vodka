@@ -1,6 +1,5 @@
 // CreateMap.h
 
-// include guard
 #ifndef CREATEMAP_H
 #define CREATEMAP_H
 

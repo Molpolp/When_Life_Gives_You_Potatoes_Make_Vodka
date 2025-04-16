@@ -13,7 +13,7 @@ namespace UM
 		DEAD_CELL = 0
 		;
 
-	// Counts the number of alive neighbors a cell has
+	// Counts the number of alive neighbors a cell has.
 	int getTotalNeighbors(int boardHeight, int boardWidth, int& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
 		std::vector<std::vector<int>>& mapToParse)
 	{
@@ -65,7 +65,7 @@ namespace UM
 		return totalNeighbors;
 	}
 
-	// Finds the future state of the current cell being evaluated
+	// Parses the cell who's coordinates were passed as an argument.
 	int valueToSetNewCell(int& currentY, int& currentX, int& height, int& width,
 		std::vector<std::vector<int>>& mapToParse)
 	{
@@ -91,7 +91,7 @@ namespace UM
 
 	}
 
-	// Updates the second input array based on the cells from the first
+	// Updates outputMap with the parsed cells from mapToParse.
 	void updateMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& mapToParse,
 		std::vector<std::vector<int>>& outputMap)
 	{
@@ -106,7 +106,7 @@ namespace UM
 		}
 	}
 
-	// Used to print out the current array
+	// Used to print out the current gameMap.
 	void printMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& gameMap)
 	{
 		ST::MyString* mapToPrint[75] = { {nullptr} };
@@ -128,13 +128,21 @@ namespace UM
 		}
 	}
 
+	// Sleeps in between map iterations.
 	void clearScreen()
 	{
-		if (SLEEP_AVAIL == "TRUE") Sleep(1000);
-		system(CLEAR);
+		#ifdef _WIN32
+			Sleep(1000);
+			system("cls");
+
+		#else
+			usleep(1000000);
+			system("clear");
+
+		#endif
 	}
 
-	// Used to iterate the given map state and display it
+	// Used to iterate the given map state and display it.
 	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
 		std::vector<std::vector<int>>& map0, std::vector<std::vector<int>>& map1)
 	{

@@ -22,6 +22,8 @@ namespace CM
 		   if the total is less than 64 then (firstLetter = 0) and (secondLetter = total)
 	*/
 
+	// Creates a pseudo random seed based on the user's input.
+	// Do note, it is deterministic.
 	unsigned int createSeed(char* userInput)
 	{
 		// Just picked a random prime number
@@ -36,6 +38,8 @@ namespace CM
 		return seed;
 	}
 
+	// Creates a checksum for our encoded string.
+	// Though it is very simple and can easily be exploited it's still good to have just in case.
 	void createAndWriteChecksum(ST::MyString *encodedString)
 	{
 		char* copyToCheck = encodedString->asStr(),
@@ -74,6 +78,7 @@ namespace CM
 		encodedString->insert(checksumChars, 2, 4);
 	}
 
+	// Encodes map dimensions into the first 4 characters of the encoded string (YY) and (XX).
 	void writeEncodedDimensions(ST::MyString* encodedString, int height, int width)
 	{
 		int heightRemainder = 0,
@@ -117,6 +122,7 @@ namespace CM
 
 	}
 
+	// Converts our bitmap to a string in base 64.
 	void convertMapToBase64Str(ST::MyString* encodedString, int height, int width, std::vector<std::vector<int>>& gameMap)
 	{
 		int bitsRead = 0,
@@ -184,6 +190,8 @@ namespace CM
 		createAndWriteChecksum(encodedString);
 	}
 
+	// Init gamestate, this creates an encoded string representing our bitmap.
+	// Is used as the gamestateString init when the user does not have a saved seed.
 	void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width)
 	{
 		int totalBoolsRequired = height * width,
@@ -221,6 +229,7 @@ namespace CM
 			lengthOfGamestateString = totalBoolsRequired / 6;
 	}
 
+	// Init for our first gameMap using an initialized gamestateString.
 	void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<int>>& gameMap)
 	{
 		int currentCol = 0,
@@ -291,7 +300,7 @@ namespace CM
 		}
 	}
 
-	// init display of gameMap
+	// Init display of gameMap.
 	void displayMap(std::vector<std::vector<int>>& gameMap)
 	{
 		for (const auto& currentRow : gameMap)
@@ -307,6 +316,7 @@ namespace CM
 		}
 	}
 
+	// This is the lead init function for generating a gameMap.
 	void generateGameMap(MD::MapData *mapData, std::vector<std::vector<int>>& mapToInitialize)
 	{
 
@@ -334,6 +344,7 @@ namespace CM
 		displayMap(mapToInitialize);
 	}
 
+	// Used in our simulation loop to request a number of generations to iterate through.
 	void userContinueIterations(unsigned short& numberOfIterations)
 	{
 		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"

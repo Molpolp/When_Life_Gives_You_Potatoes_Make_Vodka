@@ -31,6 +31,7 @@ namespace ST
 		return strLen;
 	}
 
+	// Outputs a copy of storedStr.
 	char* MyString::asStr()
 	{
 		char* strCopy = new char[strLen + 1];
@@ -50,7 +51,7 @@ namespace ST
 		return strCopy;
 	}
 
-	// NOTE: If the passed in array is dynamically allocated we do NOT account for that here
+	// NOTE: If the passed in array is dynamically allocated we do NOT account for that here.
 	void MyString::newStr(char* charArr)
 	{
 		delete[] storedString;
@@ -78,6 +79,7 @@ namespace ST
 		setStrLen();
 	}
 
+	// Requests and validates input for a new string.
 	void MyString::getNewStr(const char inputPrompt[MAX_STR_LENGTH])
 	{
 		char* inputCharArr = VI::verifyCharArrInput(inputPrompt, MAX_STR_LENGTH);
@@ -87,6 +89,7 @@ namespace ST
 		newStr(inputCharArr);
 	}
 
+	// Appends a single character to the end of storedStr.
 	void MyString::append(char charToAppend)
 	{
 		char* newArr = new char[strLen + 5];
@@ -112,6 +115,7 @@ namespace ST
 		strLen++;
 	}
 
+	// Inserts a string into storedStr.
 	void MyString::insert(char charsToInsert[MAX_STR_LENGTH], int numberOfCharsToInsert, int indexToInsertChars)
 	{
 		bool validStrInput = isStrValidLen(charsToInsert, numberOfCharsToInsert);
@@ -171,6 +175,7 @@ namespace ST
 
 	}
 
+	// Validates string passed as an arg in the insert() method.
 	bool MyString::isStrValidLen(char arrToCheck[MAX_STR_LENGTH], int lengthToValidate)
 	{
 		bool validStrLen = false;
@@ -184,6 +189,7 @@ namespace ST
 		return validStrLen;
 	}
 
+	// Private member functions for setting strLen.
 	void MyString::setStrLen()
 	{
 		int curIndex = -1;
@@ -196,7 +202,6 @@ namespace ST
 
 		strLen = curIndex;
 	}
-
 	void MyString::setStrLen(char* strToUse)
 	{
 		int curIndex = -1;

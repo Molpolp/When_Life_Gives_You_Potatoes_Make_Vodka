@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include "VerifyInput.h"
 
-
 namespace ST
 {
 	const int MAX_STR_LENGTH = 1024;

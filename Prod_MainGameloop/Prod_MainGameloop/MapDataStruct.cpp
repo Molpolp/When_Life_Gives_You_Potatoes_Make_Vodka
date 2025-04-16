@@ -19,6 +19,7 @@ namespace MD
 		initWithSeed = false;
 	}
 
+	// Provides direction for map init based on user input.
 	void MapData::initMapData()
 	{
 		initWithSeed = NO_SEED;
@@ -36,7 +37,6 @@ namespace MD
 
 		std::cout << std::endl << std::endl;
 	}
-	
 	inputSeedValid MapData::initMapData(userChoice USER_HAS_SEED)
 	{
 		initWithSeed = USER_HAS_SEED;
@@ -48,6 +48,7 @@ namespace MD
 		else return inputSeedValid::INVALID_SEED_INPUT;
 	}
 
+	// Verifies the seed input by the user is vaild.
 	bool MapData::validDecodedSeedInput()
 	{
 		bool validEncodedGamestate = true;
@@ -72,7 +73,7 @@ namespace MD
 
 			char* newGamestateStr = new char[totalLength - 5];
 
-			// Skipping the first 
+			// Skipping the first 6 height (YY), width (XX), checksum (ZZ)
 			int oldStrIndex = 6,
 				newStrIndex = 0;
 
@@ -95,6 +96,7 @@ namespace MD
 		return validEncodedGamestate;
 	}
 
+	// Gets seed input (encodedString) from user.
 	char* MapData::getSeedInput()
 	{
 		static bool invalidUserInput;
@@ -114,11 +116,11 @@ namespace MD
 				std::cin.ignore(1000, '\n');
 
 				std::cout << "Invalid input, please only enter strings less than "
-					<< 500 << " characters long." << std::endl;
+					<< 500 << " characters long." << std::endl << std::endl;
 			}
 			else if (arrayPtr[0] == '\0')
 			{
-				std::cout << "Invalid input, please enter a valid map seed." << std::endl;
+				std::cout << "Invalid input, please enter a valid map seed." << std::endl << std::endl;
 			}
 
 			else invalidUserInput = false;

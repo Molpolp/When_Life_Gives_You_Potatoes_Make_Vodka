@@ -42,11 +42,11 @@ int main()
 
 	mainMenu(&mapData);
 
-	// init game maps
+	// init game maps.
 	std::vector<std::vector<int>> gameMap0(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
 	std::vector<std::vector<int>> gameMap1(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
 
-	// Initializes our game map with data and prints its firstt state
+	// Initializes our game map with data and prints its first state.
 	CM::generateGameMap(&mapData, gameMap0);
 
 	unsigned short continueIterationsToDo = 0;
@@ -57,7 +57,7 @@ int main()
 		generationItteration = 0
 		;
 
-	// Main simulation loop
+	// Main simulation loop.
 	while (continueIterationsToDo != 0)
 	{
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)
@@ -132,7 +132,7 @@ void mainMenu(MD::MapData *mapData)
 
 	default:
 	{
-		throw std::invalid_argument("Invalid input for menu somehow made it through input validation.");
+		throw std::invalid_argument("Invalid input for menu somehow made it through input validation.\n\n");
 	}
 	}
 }
