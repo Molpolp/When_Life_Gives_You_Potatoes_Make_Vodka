@@ -2,21 +2,14 @@
 Gregory Tuosto
 Final Project
 Date Completed: April 15, 2025
-Description: This is a prototype for the backend of the project I'm working on for this class,
+Description: This is the project I'm working on for this class,
 			 It's a representation of Conway's Game of Life
 			 X is an alive cell
 			 - is a dead cell
-			 The program is not yet fully functional, but the core of it all is here,
-			 and I figured it'd be good to get feedback on, especially if there is any of the core functionality I can improve.
 
-			 The last thing I have to do to make the output seed for a user is to set the first 8 characters
-			 to dimensions and a checksum, decoding functionality is already here.
+			 All input options are displayed in the mainMenu shown on program launch.
 
-			 Inputs are
-			 Map seed: can be literally anything, no need to validate input as I simply want a random input from the user.
-			 Map dimensions: limited to range [1, 75]
-			 Continue iteration?: 1 to iterate map and 0 to exit the program
-Version: 1.0
+Version: 2.0
 ***************************************/
 
 #include "CreateMap.h"

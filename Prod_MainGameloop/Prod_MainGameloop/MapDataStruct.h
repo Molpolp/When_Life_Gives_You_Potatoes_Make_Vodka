@@ -6,14 +6,14 @@
 #include "StringLib.h"
 #include "Base64Map.h"
 
-extern enum userChoice
+enum userChoice
 {
 	NO_SEED = 0,
 	USER_HAS_SEED = 1,
 	REQUESTED_EXIT = 2
 };
 
-extern enum inputSeedValid
+enum inputSeedValid
 {
 	INVALID_SEED_INPUT = 0,
 	VALID_INPUT = 1

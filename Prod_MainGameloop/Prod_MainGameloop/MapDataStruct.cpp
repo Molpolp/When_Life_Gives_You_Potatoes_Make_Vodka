@@ -31,8 +31,8 @@ namespace MD
 
 		ptrGamestateStr->newStr(userSeedInput);
 
-		mapHeight = VI::verifyIntInput("Please input an int value for the map's height: ", 5, 75);
-		mapWidth = VI::verifyIntInput("Please input an int value for the map's width: ", 5, 75);
+		mapHeight = VI::verifyIntInput("Please input an int value for the map's height [5, 75]: ", 5, 75);
+		mapWidth = VI::verifyIntInput("Please input an int value for the map's width [5, 75]: ", 5, 75);
 
 		std::cout << std::endl << std::endl;
 	}
