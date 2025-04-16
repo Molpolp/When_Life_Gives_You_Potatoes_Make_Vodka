@@ -5,7 +5,6 @@ Description: Data struct for storing map values
 Version: 1.0
 ***************************************/
 
-
 #include "MapDataStruct.h"
 
 namespace MD

@@ -27,7 +27,6 @@ Version: 1.0
 #include "MapDataStruct.h"
 #include <cstdlib>
 
-
 void mainMenu(MD::MapData *mapData);
 
 int main()

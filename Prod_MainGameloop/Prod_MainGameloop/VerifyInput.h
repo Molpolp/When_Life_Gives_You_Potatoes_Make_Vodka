@@ -3,7 +3,6 @@
 #ifndef VERIFY_INPUT_H
 #define VERIFY_INPUT_H
 
-
 #include <iostream>
 #include <vector>
 #include "StringLib.h"

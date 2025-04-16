@@ -7,7 +7,6 @@ Version: 1.0
 
 #include "StringLib.h"
 
-
 namespace ST
 {
 	MyString::MyString()
