@@ -9,7 +9,6 @@
 
 namespace B64
 {
-    // extern keyword to make these accessable from other .cpp files in the project
     extern std::unordered_map<char, int> base64CharToVal;
     
     extern std::array<char, 64> base64ValToChar;

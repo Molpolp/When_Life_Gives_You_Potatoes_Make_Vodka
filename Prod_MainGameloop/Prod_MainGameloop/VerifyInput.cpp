@@ -194,7 +194,6 @@ namespace VI
 	}
 
 	// LettersOnly to be implimented
-	// Fix bools, they don't like being passed in tbh
 	char verifyCharInput(const char inputPrompt[], bool returnLower = true)
 	{
 		static bool invalidUserInput;

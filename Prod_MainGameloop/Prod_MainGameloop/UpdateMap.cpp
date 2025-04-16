@@ -126,18 +126,6 @@ namespace UM
 		{
 			std::cout << mapToPrint[index]->asStr();
 		}
-
-		/*
-		for (int currentY = 0; currentY <= maxHeight; currentY++)
-		{
-			std::cout << "\n";
-
-			for (int currentX = 0; currentX <= maxWidth; currentX++)
-			{
-				std::cout << gameMap[currentY][currentX] << " ";
-			}
-		}
-		*/
 	}
 
 	void clearScreen()

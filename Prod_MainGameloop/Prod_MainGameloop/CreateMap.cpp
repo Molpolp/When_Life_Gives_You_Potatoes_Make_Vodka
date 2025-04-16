@@ -11,7 +11,7 @@ namespace CM
 {
 	/*
 	Example input string for a map using base 64 (A-Z)(a-z)(0-9)(+)(/)
-	(YY)(XX)(ZZ)(FFFFFFFFF...FF!F)
+	(YY)(XX)(ZZ)(FFFFFFFFF...FF!RF)
 	(!RF) is included if 0 < (width * height) % 6
 		R is the remainder count
 		F is the base 64 char containing the remainder values
@@ -19,6 +19,7 @@ namespace CM
 	(XX) is the encoded width of the map
 	(ZZ) is a checksum for the length of the string and is the total length of the string
 		   is read left to right, firstLetter is (total / 64) second letter is (total - firstLetter * 64)
+		   if the total is less than 64 then (firstLetter = 0) and (secondLetter = total)
 	*/
 
 	unsigned int createSeed(char* userInput)
@@ -234,10 +235,9 @@ namespace CM
 			// Break character if less than 6 map values remain to be set
 			if (*charPtr == '!')
 			{
-				// do something
 				charPtr++;
 
-				// Should be a value in [1, 5]
+				// Will be a value in [1, 5]
 				int remainder = B64::base64CharToVal[*charPtr];
 
 				for (int index = 0; index < remainder; index++)
@@ -291,7 +291,7 @@ namespace CM
 		}
 	}
 
-	// TODO make this print better
+	// init display of gameMap
 	void displayMap(std::vector<std::vector<int>>& gameMap)
 	{
 		for (const auto& currentRow : gameMap)
