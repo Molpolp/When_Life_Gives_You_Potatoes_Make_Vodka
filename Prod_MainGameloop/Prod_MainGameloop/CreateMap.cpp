@@ -327,6 +327,6 @@ namespace CM
 		}
 		}
 
-		displayMap(mapToInitialize);
+		UM::displayMap(mapToInitialize);
 	}
 }

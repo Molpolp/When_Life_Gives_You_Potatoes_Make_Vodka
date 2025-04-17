@@ -6,6 +6,7 @@
 #include "VerifyInput.h"
 #include "StringLib.h"
 #include "MapDataStruct.h"
+#include "UpdateMap.h"
 #include <iostream>
 #include <bitset>
 #include <cstdlib>
