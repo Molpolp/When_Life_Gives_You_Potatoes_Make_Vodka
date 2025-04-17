@@ -22,11 +22,11 @@ namespace CM
 {
     unsigned int createSeed(const char* userInput);
 
-    void writeEncodedDimensions(ST::MyString* encodedString, int height, int width);
+    void writeEncodedDimensions(MD::MapData* mapData);
 
-    void convertMapToBase64Str(ST::MyString *encodedString,int height, int width, std::vector<std::vector<char>>& gameMap);
+    void convertMapToBase64Str(MD::MapData* mapData, std::vector<std::vector<char>>& gameMap);
 
-    void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width);
+    void createGamestate(MD::MapData* mapData, unsigned int seed);
 
     void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<char>>& gameMap);
 

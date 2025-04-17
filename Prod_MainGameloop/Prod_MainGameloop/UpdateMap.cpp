@@ -14,7 +14,7 @@ namespace UM
 		;
 
 	// Counts the number of alive neighbors a cell has.
-	int getTotalNeighbors(int boardHeight, int boardWidth, char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
+	int getTotalNeighbors(MD::MapData *mapData, char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
 		std::vector<std::vector<char>>& mapToParse)
 	{
 		int totalNeighbors = 0,
@@ -29,7 +29,7 @@ namespace UM
 			lowerBoundY = 0;
 		}
 
-		else if (yOfCellToCheck == boardHeight - 1)
+		else if (yOfCellToCheck == mapData->mapHeight - 1)
 		{
 			upperBoundY = 0;
 		}
@@ -39,7 +39,7 @@ namespace UM
 			lowerBoundX = 0;
 		}
 
-		else if (xOfCellToCheck == boardWidth - 1)
+		else if (xOfCellToCheck == mapData->mapWidth - 1)
 		{
 			upperBoundX = 0;
 		}
@@ -66,12 +66,12 @@ namespace UM
 	}
 
 	// Parses the cell who's coordinates were passed as an argument.
-	int valueToSetNewCell(int& currentY, int& currentX, int& height, int& width,
+	int valueToSetNewCell(MD::MapData* mapData, int& currentY, int& currentX,
 		std::vector<std::vector<char>>& mapToParse)
 	{
 		int totalNeighbors = 0;
 
-		totalNeighbors = getTotalNeighbors(height + 1, width + 1, mapToParse[currentY][currentX],
+		totalNeighbors = getTotalNeighbors(mapData, mapToParse[currentY][currentX],
 			currentY, currentX, mapToParse);
 
 		// Cell is dead regardless of initial state
@@ -92,16 +92,16 @@ namespace UM
 	}
 
 	// Updates outputMap with the parsed cells from mapToParse.
-	void updateMap(int& maxHeight, int& maxWidth, std::vector<std::vector<char>>& mapToParse,
+	void updateMap(MD::MapData *mapData, std::vector<std::vector<char>>& mapToParse,
 		std::vector<std::vector<char>>& outputMap)
 	{
 
-		for (int currentY = 0; currentY <= maxHeight; currentY++)
+		for (int currentY = 0; currentY <= mapData->mapHeight - 1; currentY++)
 		{
-			for (int currentX = 0; currentX <= maxWidth; currentX++)
+			for (int currentX = 0; currentX <= mapData->mapWidth - 1; currentX++)
 			{
-				outputMap[currentY][currentX] = valueToSetNewCell(currentY, currentX,
-					maxHeight, maxWidth, mapToParse);
+				outputMap[currentY][currentX] = valueToSetNewCell(mapData, currentY, currentX,
+					mapToParse);
 			}
 		}
 	}
@@ -121,59 +121,86 @@ namespace UM
 	}
 
 	// Init display of gameMap.
-	void displayMap(std::vector<std::vector<char>>& gameMap)
+	void displayMap(MD::MapData* mapData, std::vector<std::vector<char>>& gameMap)
 	{
 		ST::MyString* mapToPrint;
 
-		mapToPrint = new ST::MyString[gameMap.size()];
+		mapToPrint = new ST::MyString[mapData->mapHeight + 2];
 
-		int currentY = 0;
+		int currentY = 0,
+			formattingWidth = (mapData->mapWidth + 1) * 2;
+
+		mapToPrint[currentY].append('/');
+
+		for (int iteration = 0; iteration < formattingWidth; iteration++)
+		{
+			mapToPrint[currentY].append('-');
+		}
+
+		mapToPrint[currentY].append('\\');
+
+		mapToPrint[currentY].append('\n');
+		mapToPrint++;
 
 		for (const auto& currentRow : gameMap)
 		{
-			mapToPrint[currentY].append('\n');
+			mapToPrint[currentY].append('|');
+			mapToPrint[currentY].append(' ');
 
 			for (int currentCell : currentRow)
 			{
-				mapToPrint[currentY].append(currentCell ? 'X' : '-');
+				mapToPrint[currentY].append(currentCell ? 'X' : ' ');
 				mapToPrint[currentY].append(' ');
 			}
+
+			mapToPrint[currentY].append(' ');
+			mapToPrint[currentY].append('|');
+			mapToPrint[currentY].append('\n');
 
 			currentY++;
 		}
 
-		for (int index = 0; index < static_cast<int>(gameMap.size()); index++)
+		mapToPrint[currentY].append('\\');
+
+		for (int iteration = 0; iteration < formattingWidth; iteration++)
+		{
+			mapToPrint[currentY].append('-');
+		}
+
+		mapToPrint[currentY].append('/');
+		mapToPrint[currentY].append('\n');
+		mapToPrint--;
+
+		for (int index = 0; index < mapData->mapHeight + 2; index++)
 		{
 			std::cout << mapToPrint[index].asStr();
 		}
 
 		std::cout << std::endl << std::endl;
-
-		delete[] mapToPrint;
 	}
 
 	// Used to iterate the given map state and display it.
-	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
+	void iterateMap(MD::MapData *mapData, int& generationItteration,
 		std::vector<std::vector<char>>& map0, std::vector<std::vector<char>>& map1)
 	{
 		clearScreen(true);
 
 		if (generationItteration % 2 == 0)
 		{
-			UM::updateMap(mapHeightIndexing, mapWidthIndexing, map0, map1);
+			UM::updateMap(mapData, map0, map1);
 
 			std::cout << std::endl;
 
-			UM::displayMap(map1);
+			UM::displayMap(mapData, map1);
 		}
 
 		else
 		{
-			UM::updateMap(mapHeightIndexing, mapWidthIndexing, map1, map0);
+			UM::updateMap(mapData, map1, map0);
 
 			std::cout << std::endl;
 
-			UM::displayMap(map0);
+			UM::displayMap(mapData, map0);
 		}
 	}
 

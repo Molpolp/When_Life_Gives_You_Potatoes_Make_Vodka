@@ -19,21 +19,20 @@
 
 namespace UM
 {
-	int getTotalNeighbors(int boardHeight, int boardWidth,
-		char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
+	int getTotalNeighbors(MD::MapData* mapData, char& cellDeadOrAlive, int& yOfCellToCheck,
+		int& xOfCellToCheck, std::vector<std::vector<char>>& mapToParse);
+
+	int valueToSetNewCell(MD::MapData* mapData, int& currentY, int& currentX,
 		std::vector<std::vector<char>>& mapToParse);
 
-	int valueToSetNewCell(int& currentY, int& currentX, int& height, int& width,
-		std::vector<std::vector<char>>& mapToParse);
-
-	void updateMap(int& maxHeight, int& maxWidth, std::vector<std::vector<char>>& mapToParse,
+	void updateMap(MD::MapData* mapData, std::vector<std::vector<char>>& mapToParse,
 		std::vector<std::vector<char>>& outputMap);
 
 	void clearScreen(bool sleepYes);
 
-	void displayMap(std::vector<std::vector<char>>& gameMap);
+	void displayMap(MD::MapData* mapData, std::vector<std::vector<char>>& gameMap);
 
-	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
+	void iterateMap(MD::MapData* mapData, int& generationItteration,
 		std::vector<std::vector<char>>& map0, std::vector<std::vector<char>>& map1);
 
 	void userContinueIterations(unsigned short& numberOfIterations);

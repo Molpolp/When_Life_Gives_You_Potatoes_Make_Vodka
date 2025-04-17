@@ -13,6 +13,8 @@ namespace MD
 	{
 		ptrGamestateStr = gamestateString;
 
+		seedToPrintStr = nullptr;
+
 		mapHeight = mapWidth = 0;
 
 		initWithSeed = false;

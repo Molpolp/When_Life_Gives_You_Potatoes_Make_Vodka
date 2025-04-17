@@ -33,6 +33,7 @@ namespace MD
 		bool initWithSeed;
 
 		ST::MyString* ptrGamestateStr;
+		ST::MyString* seedToPrintStr;
 
 	private:
 		bool validDecodedSeedInput();

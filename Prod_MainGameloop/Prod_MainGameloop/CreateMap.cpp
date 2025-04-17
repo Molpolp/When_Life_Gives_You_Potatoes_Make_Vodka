@@ -43,7 +43,7 @@ namespace CM
 	void createAndWriteChecksum(ST::MyString *encodedString)
 	{
 		char* copyToCheck = encodedString->asStr(),
-			checksumChars[3];
+			checksumChars[3] = {};
 
 		// Counting the two characters from the checksum that will be added
 		int totalLength = 2;
@@ -79,58 +79,58 @@ namespace CM
 	}
 
 	// Encodes map dimensions into the first 4 characters of the encoded string (YY) and (XX).
-	void writeEncodedDimensions(ST::MyString* encodedString, int height, int width)
+	void writeEncodedDimensions(MD::MapData* mapData)
 	{
 		int heightRemainder = 0,
 			widthRemainder = 0;
 
-		if (height > 63)
+		if (mapData->mapHeight > 63)
 		{
-			heightRemainder = height % 63;
+			heightRemainder = mapData->mapHeight % 63;
 
 			// 63 in base 64
-			encodedString->append('/');
+			mapData->seedToPrintStr->append('/');
 
-			encodedString->append(B64::base64ValToChar[heightRemainder]);
+			mapData->seedToPrintStr->append(B64::base64ValToChar[heightRemainder]);
 		}
 
 		else
 		{
-			encodedString->append(B64::base64ValToChar[height]);
+			mapData->seedToPrintStr->append(B64::base64ValToChar[mapData->mapHeight]);
 
 			// 0 in base 64
-			encodedString->append('A');
+			mapData->seedToPrintStr->append('A');
 		}
 
-		if (width > 63)
+		if (mapData->mapWidth > 63)
 		{
-			widthRemainder = width % 63;
+			widthRemainder = mapData->mapWidth % 63;
 
 			// 63 in base 64
-			encodedString->append('/');
+			mapData->seedToPrintStr->append('/');
 
-			encodedString->append(B64::base64ValToChar[widthRemainder]);
+			mapData->seedToPrintStr->append(B64::base64ValToChar[widthRemainder]);
 		}
 
 		else
 		{
-			encodedString->append(B64::base64ValToChar[width]);
+			mapData->seedToPrintStr->append(B64::base64ValToChar[mapData->mapWidth]);
 
 			// 0 in base 64
-			encodedString->append('A');
+			mapData->seedToPrintStr->append('A');
 		}
 
 	}
 
 	// Converts our bitmap to a string in base 64.
-	void convertMapToBase64Str(ST::MyString* encodedString, int height, int width, std::vector<std::vector<char>>& gameMap)
+	void convertMapToBase64Str(MD::MapData* mapData, std::vector<std::vector<char>>& gameMap)
 	{
 		int bitsRead = 0,
-			maxBitsToRead = height * width,
+			maxBitsToRead = mapData->mapHeight * mapData->mapWidth,
 			currentRow = 0,
 			runningTotalToDecode = 0;
 
-		writeEncodedDimensions(encodedString, height, width);
+		writeEncodedDimensions(mapData);
 
 		bool encodingMap = true;
 
@@ -143,17 +143,17 @@ namespace CM
 			for (int index = 0; index < 6; index++)
 			{
 
-				if ((currentRow < height) && (& gameMap[currentRow].back() < mapPtr))
+				if ((currentRow < mapData->mapHeight) && (& gameMap[currentRow].back() < mapPtr))
 				{
-					if (currentRow == height - 1)
+					if (currentRow == mapData->mapHeight - 1)
 					{
 						encodingMap = false;
 
-						encodedString->append('!');
+						mapData->seedToPrintStr->append('!');
 
-						int remainder = (height * width) % 6;
+						int remainder = (mapData->mapHeight * mapData->mapWidth) % 6;
 
-						encodedString->append(B64::base64ValToChar[remainder]);
+						mapData->seedToPrintStr->append(B64::base64ValToChar[remainder]);
 
 						break;
 					}
@@ -180,53 +180,53 @@ namespace CM
 			terminatingLoop:
 
 			if (runningTotalToDecode < 64)
-				encodedString->append(B64::base64ValToChar[runningTotalToDecode]);
+				mapData->seedToPrintStr->append(B64::base64ValToChar[runningTotalToDecode]);
 
 			else throw std::out_of_range("runningTotalToDecode in convertMapToBase64String out of range.");
 
 			runningTotalToDecode = 0;
 		}
 
-		createAndWriteChecksum(encodedString);
+		createAndWriteChecksum(mapData->seedToPrintStr);
 	}
 
 	// Init gamestate, this creates an encoded string representing our bitmap.
 	// Is used as the gamestateString init when the user does not have a saved seed.
-	void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width)
+	void createGamestate(MD::MapData* mapData, unsigned int seed)
 	{
-		int totalBoolsRequired = height * width,
+		int totalBoolsNeeded = mapData->mapHeight * mapData->mapWidth,
 			currentSeedValue = 0,
-			lengthOfGamestateString = 0;
+			lenGamestateStr = 0;
 
-		short remainder = totalBoolsRequired % 6;
+		short remainder = totalBoolsNeeded % 6;
 
 		srand(seed);
 
 		int index = 0;
-		for (index = 0; index < (totalBoolsRequired / 6); index++)
+		for (index = 0; index < (totalBoolsNeeded / 6); index++)
 		{
 			currentSeedValue = rand() % 64;
 
-			gamestateString->append(B64::base64ValToChar[currentSeedValue]);
+			mapData->ptrGamestateStr->append(B64::base64ValToChar[currentSeedValue]);
 		}
 
 		if (0 < remainder)
 		{
 			// Break character
-			gamestateString->append('!');
+			mapData->ptrGamestateStr->append('!');
 
 			// This is the number of bits remaining to be read
-			gamestateString->append(B64::base64ValToChar[remainder]);
+			mapData->ptrGamestateStr->append(B64::base64ValToChar[remainder]);
 
 			currentSeedValue = rand() % 64;
 
-			gamestateString->append(B64::base64ValToChar[currentSeedValue]);
+			mapData->ptrGamestateStr->append(B64::base64ValToChar[currentSeedValue]);
 
-			lengthOfGamestateString = totalBoolsRequired / 6 + 3;
+			lenGamestateStr = totalBoolsNeeded / 6 + 3;
 		}
 
 		else
-			lengthOfGamestateString = totalBoolsRequired / 6;
+			lenGamestateStr = totalBoolsNeeded / 6;
 	}
 
 	// Init for our first gameMap using an initialized gamestateString.
@@ -312,7 +312,7 @@ namespace CM
 		{
 			unsigned int seed = createSeed(mapData->ptrGamestateStr->asStr());
 
-			createGamestate(mapData->ptrGamestateStr, seed, mapData->mapHeight, mapData->mapWidth);
+			createGamestate(mapData, seed);
 
 			convertBase64StrToMap(mapData, mapToInitialize);
 
@@ -327,6 +327,6 @@ namespace CM
 		}
 		}
 
-		UM::displayMap(mapToInitialize);
+		UM::displayMap(mapData, mapToInitialize);
 	}
 }

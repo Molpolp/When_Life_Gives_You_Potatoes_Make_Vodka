@@ -42,16 +42,14 @@ int main()
 	unsigned short continueIterationsToDo = 0;
 	UM::userContinueIterations(continueIterationsToDo);
 
-	int mapHeightIndexing = mapData.mapHeight - 1,
-		mapWidthIndexing = mapData.mapWidth - 1,
-		generationItteration = 0;
+	int generationItteration = 0;
 
 	// Main simulation loop.
 	while (continueIterationsToDo != 0)
 	{
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)
 		{
-			UM::iterateMap(mapHeightIndexing, mapWidthIndexing, generationItteration, gameMap0, gameMap1);
+			UM::iterateMap(&mapData, generationItteration, gameMap0, gameMap1);
 
 			generationItteration++;
 		}
@@ -66,12 +64,11 @@ int main()
 
 	if (userChoiceToPrintSeed)
 	{
-		ST::MyString requestedSeed;
-		
-		CM::convertMapToBase64Str(&requestedSeed, mapData.mapHeight, mapData.mapWidth,
-			(generationItteration % 2 ? gameMap1 : gameMap0));
+		mapData.seedToPrintStr = new ST::MyString;
 
-		std::cout << requestedSeed.asStr();
+		CM::convertMapToBase64Str(&mapData, (generationItteration % 2 ? gameMap1 : gameMap0));
+
+		std::cout << mapData.seedToPrintStr->asStr();
 	}
 
 	std::cout << std::endl << std::endl;

@@ -99,10 +99,12 @@ namespace ST
 			newArr[index] = storedString[index];
 		}
 
-		for (int index = 0; index < nextSubStrIndex - 1; index++)
+		for (int index = 0; index < nextSubStrIndex; index++)
 		{
-			delete[] subStrsToCleanup[index];
+			if (subStrsToCleanup[index] != NULL) delete[] subStrsToCleanup[index];
 		}
+
+		nextSubStrIndex = 0;
 
 		delete[] storedString;
 
