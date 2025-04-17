@@ -106,28 +106,6 @@ namespace UM
 		}
 	}
 
-	// Used to print out the current gameMap.
-	void printMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& gameMap)
-	{
-		ST::MyString* mapToPrint[75] = { {nullptr} };
-
-		for (int currentY = 0; currentY <= maxHeight; currentY++)
-		{
-			mapToPrint[currentY]->append('\n');
-
-			for (int currentX = 0; currentX <= maxWidth; currentX++)
-			{
-				mapToPrint[currentY]->append(gameMap[currentY][currentX]);
-				mapToPrint[currentY]->append(' ');
-			}
-		}
-
-		for (int index = 0; index < maxHeight; index++)
-		{
-			std::cout << mapToPrint[index]->asStr();
-		}
-	}
-
 	// Sleeps in between map iterations.
 	void clearScreen()
 	{

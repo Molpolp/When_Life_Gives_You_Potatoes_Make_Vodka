@@ -244,21 +244,23 @@ namespace CM
 			// Break character if less than 6 map values remain to be set
 			if (*charPtr == '!')
 			{
+				// next value will be the number of remaining map locations
+				// value after will be the final char in the string and will be the encoded remainder bools
 				charPtr++;
 
 				// Will be a value in [1, 5]
 				int remainder = B64::base64CharToVal[*charPtr];
 
+				charPtr++;
+
+				std::bitset<6> bits(B64::base64CharToVal[*charPtr]);
+
 				for (int index = 0; index < remainder; index++)
 				{
-					mapPtr++;
-
-					std::bitset<6> bits(B64::base64CharToVal[*charPtr]);
-
 					*mapPtr = bits[index];
+
+					mapPtr++;
 				}
-				// next value will be the number of remaining map locations
-				// value after will be the final char in the string and will be the encoded remainder bools
 
 				break;
 			}
@@ -303,17 +305,31 @@ namespace CM
 	// Init display of gameMap.
 	void displayMap(std::vector<std::vector<int>>& gameMap)
 	{
+		ST::MyString* mapToPrint;
+
+		mapToPrint = new ST::MyString[gameMap.size()];
+
+		int currentY = 0;
+
 		for (const auto& currentRow : gameMap)
 		{
+			mapToPrint[currentY].append('\n');
+
 			for (int currentCell : currentRow)
 			{
-				std::cout << (currentCell ? "X" : "-")
-					<< " "
-					;
+				mapToPrint[currentY].append(currentCell ? 'X' : '-');
+				mapToPrint[currentY].append(' ');
 			}
 
-			std::cout << std::endl;
+			currentY++;
 		}
+
+		for (int index = 0; index < gameMap.size(); index++)
+		{
+			std::cout << mapToPrint[index].asStr();
+		}
+
+		std::cout << std::endl << std::endl;
 	}
 
 	// This is the lead init function for generating a gameMap.

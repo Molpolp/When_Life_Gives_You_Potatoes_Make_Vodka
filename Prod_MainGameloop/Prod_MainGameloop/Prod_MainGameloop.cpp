@@ -29,9 +29,7 @@ int main()
 	ST::MyString gamestateString;
 
 	MD::MapData mapData(&gamestateString);
-
-	START_OF_GAME:
-
+	
 	mainMenu(&mapData);
 
 	// init game maps.
@@ -46,8 +44,7 @@ int main()
 
 	int mapHeightIndexing = mapData.mapHeight - 1,
 		mapWidthIndexing = mapData.mapWidth - 1,
-		generationItteration = 0
-		;
+		generationItteration = 0;
 
 	// Main simulation loop.
 	while (continueIterationsToDo != 0)
@@ -58,10 +55,8 @@ int main()
 
 			generationItteration++;
 		}
-
+		
 		CM::userContinueIterations(continueIterationsToDo);
-
-		generationItteration++;
 	}
 
 	int userChoiceToPrintSeed = VI::verifyIntInput(
@@ -80,6 +75,8 @@ int main()
 	}
 
 	std::cout << std::endl << std::endl;
+
+	std::exit(0);
 
 	return 0;
 }
