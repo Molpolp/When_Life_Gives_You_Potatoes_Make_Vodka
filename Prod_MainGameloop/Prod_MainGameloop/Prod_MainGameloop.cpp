@@ -1,7 +1,7 @@
 /***************************************
 Gregory Tuosto
 Final Project
-Date Completed: April 15, 2025
+Date Completed: April 16, 2025
 Description: This is the project I'm working on for this class,
 			 It's a representation of Conway's Game of Life
 			 X is an alive cell
