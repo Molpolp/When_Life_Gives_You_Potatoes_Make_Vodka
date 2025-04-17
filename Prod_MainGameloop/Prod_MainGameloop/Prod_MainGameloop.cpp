@@ -1,11 +1,11 @@
 /***************************************
 Gregory Tuosto
 Final Project
-Date Completed: April 16, 2025
+Date Completed: April 17, 2025
 Description: This is the project I'm working on for this class,
 			 It's a representation of Conway's Game of Life
 			 X is an alive cell
-			 - is a dead cell
+			 ' ' (nothing) is a dead cell
 
 			 All input options are displayed in the mainMenu shown on program launch.
 
@@ -57,8 +57,8 @@ int main()
 		UM::userContinueIterations(continueIterationsToDo);
 	}
 
-	int userChoiceToPrintSeed = VI::verifyIntInput(
-		"Would you like the seed of this map printed to the console? (1 for yes, 0 for no): ", 0, 1);
+	int userChoiceToPrintSeed = VI::verifyIntInput("Would you like the seed "
+		"of this map printed to the console? (1 for yes, 0 for no): ", 0, 1);
 
 	std::cout << std::endl;
 
@@ -71,9 +71,10 @@ int main()
 		std::cout << mapData.seedToPrintStr->asStr();
 	}
 
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl << std::endl
+		<< "Press enter to conclude program execution.";
 
-	std::exit(0);
+	std::cin.peek();
 
 	return 0;
 }

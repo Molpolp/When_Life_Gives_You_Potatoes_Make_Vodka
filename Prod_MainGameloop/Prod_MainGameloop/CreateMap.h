@@ -14,8 +14,6 @@
 
 // base64Map[character] = int		// This is our dictionary for character to int
 // base64Chars[int] = character		// This is our array for int to character
-// B64::initializeBase64Maps();		// Call this to initialize the maps
-// The library uses namespace B64
 #include "Base64Map.h"
 
 namespace CM
