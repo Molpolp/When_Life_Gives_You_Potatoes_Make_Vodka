@@ -23,17 +23,13 @@ namespace CM
 
     void writeEncodedDimensions(ST::MyString* encodedString, int height, int width);
 
-    void convertMapToBase64Str(ST::MyString *encodedString,int height, int width, std::vector<std::vector<int>>& gameMap);
+    void convertMapToBase64Str(ST::MyString *encodedString,int height, int width, std::vector<std::vector<char>>& gameMap);
 
     void createGamestate(ST::MyString *gamestateString, unsigned int seed, int height, int width);
 
-    void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<int>>& gameMap);
+    void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<char>>& gameMap);
 
-    void displayMap(std::vector<std::vector<int>>& gameMap);
-
-    void generateGameMap(MD::MapData *mapData, std::vector<std::vector<int>>& mapToInitialize);
-
-    void userContinueIterations(unsigned short& numberOfIterations);
+    void generateGameMap(MD::MapData *mapData, std::vector<std::vector<char>>& mapToInitialize);
 }
 
 #endif

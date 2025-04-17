@@ -33,14 +33,14 @@ int main()
 	mainMenu(&mapData);
 
 	// init game maps.
-	std::vector<std::vector<int>> gameMap0(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
-	std::vector<std::vector<int>> gameMap1(mapData.mapHeight, std::vector<int>(mapData.mapWidth, 0));
+	std::vector<std::vector<char>> gameMap0(mapData.mapHeight, std::vector<char>(mapData.mapWidth, 0));
+	std::vector<std::vector<char>> gameMap1(mapData.mapHeight, std::vector<char>(mapData.mapWidth, 0));
 
 	// Initializes our game map with data and prints its first state.
 	CM::generateGameMap(&mapData, gameMap0);
 
 	unsigned short continueIterationsToDo = 0;
-	CM::userContinueIterations(continueIterationsToDo);
+	UM::userContinueIterations(continueIterationsToDo);
 
 	int mapHeightIndexing = mapData.mapHeight - 1,
 		mapWidthIndexing = mapData.mapWidth - 1,
@@ -56,7 +56,7 @@ int main()
 			generationItteration++;
 		}
 		
-		CM::userContinueIterations(continueIterationsToDo);
+		UM::userContinueIterations(continueIterationsToDo);
 	}
 
 	int userChoiceToPrintSeed = VI::verifyIntInput(
@@ -105,6 +105,8 @@ void mainMenu(MD::MapData *mapData)
 		if (mapData->initMapData(USER_HAS_SEED) == INVALID_SEED_INPUT)
 		{
 			std::cout << "Invalid seed input, please input a valid seed or initialize a random gamemap.\n\n";
+
+			UM::clearScreen(false);
 
 			return mainMenu(mapData);
 		}

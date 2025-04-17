@@ -14,8 +14,8 @@ namespace UM
 		;
 
 	// Counts the number of alive neighbors a cell has.
-	int getTotalNeighbors(int boardHeight, int boardWidth, int& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
-		std::vector<std::vector<int>>& mapToParse)
+	int getTotalNeighbors(int boardHeight, int boardWidth, char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
+		std::vector<std::vector<char>>& mapToParse)
 	{
 		int totalNeighbors = 0,
 			lowerBoundY = -1,
@@ -67,7 +67,7 @@ namespace UM
 
 	// Parses the cell who's coordinates were passed as an argument.
 	int valueToSetNewCell(int& currentY, int& currentX, int& height, int& width,
-		std::vector<std::vector<int>>& mapToParse)
+		std::vector<std::vector<char>>& mapToParse)
 	{
 		int totalNeighbors = 0;
 
@@ -92,8 +92,8 @@ namespace UM
 	}
 
 	// Updates outputMap with the parsed cells from mapToParse.
-	void updateMap(int& maxHeight, int& maxWidth, std::vector<std::vector<int>>& mapToParse,
-		std::vector<std::vector<int>>& outputMap)
+	void updateMap(int& maxHeight, int& maxWidth, std::vector<std::vector<char>>& mapToParse,
+		std::vector<std::vector<char>>& outputMap)
 	{
 
 		for (int currentY = 0; currentY <= maxHeight; currentY++)
@@ -107,24 +107,54 @@ namespace UM
 	}
 
 	// Sleeps in between map iterations.
-	void clearScreen()
+	void clearScreen(bool sleepYes)
 	{
 		#ifdef _WIN32
-			Sleep(1000);
+			if (sleepYes) Sleep(1000);
 			system("cls");
 
 		#else
-			usleep(1000000);
+			if (sleepYes) usleep(1000000);
 			system("clear");
 
 		#endif
 	}
 
+	// Init display of gameMap.
+	void displayMap(std::vector<std::vector<char>>& gameMap)
+	{
+		ST::MyString* mapToPrint;
+
+		mapToPrint = new ST::MyString[gameMap.size()];
+
+		int currentY = 0;
+
+		for (const auto& currentRow : gameMap)
+		{
+			mapToPrint[currentY].append('\n');
+
+			for (int currentCell : currentRow)
+			{
+				mapToPrint[currentY].append(currentCell ? 'X' : '-');
+				mapToPrint[currentY].append(' ');
+			}
+
+			currentY++;
+		}
+
+		for (int index = 0; index < gameMap.size(); index++)
+		{
+			std::cout << mapToPrint[index].asStr();
+		}
+
+		std::cout << std::endl << std::endl;
+	}
+
 	// Used to iterate the given map state and display it.
 	void iterateMap(int mapHeightIndexing, int mapWidthIndexing, int& generationItteration,
-		std::vector<std::vector<int>>& map0, std::vector<std::vector<int>>& map1)
+		std::vector<std::vector<char>>& map0, std::vector<std::vector<char>>& map1)
 	{
-		clearScreen();
+		clearScreen(true);
 
 		if (generationItteration % 2 == 0)
 		{
@@ -132,7 +162,7 @@ namespace UM
 
 			std::cout << std::endl;
 
-			CM::displayMap(map1);
+			UM::displayMap(map1);
 		}
 
 		else
@@ -141,7 +171,14 @@ namespace UM
 
 			std::cout << std::endl;
 
-			CM::displayMap(map0);
+			UM::displayMap(map0);
 		}
+	}
+
+	// Used in our simulation loop to request a number of generations to iterate through.
+	void userContinueIterations(unsigned short& numberOfIterations)
+	{
+		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"
+			" iterate (0 to terminate the simulation): ", 0, 4000);
 	}
 }

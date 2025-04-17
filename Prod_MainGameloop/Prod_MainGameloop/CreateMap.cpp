@@ -123,7 +123,7 @@ namespace CM
 	}
 
 	// Converts our bitmap to a string in base 64.
-	void convertMapToBase64Str(ST::MyString* encodedString, int height, int width, std::vector<std::vector<int>>& gameMap)
+	void convertMapToBase64Str(ST::MyString* encodedString, int height, int width, std::vector<std::vector<char>>& gameMap)
 	{
 		int bitsRead = 0,
 			maxBitsToRead = height * width,
@@ -134,7 +134,7 @@ namespace CM
 
 		bool encodingMap = true;
 
-		int* mapPtr = &gameMap[currentRow].front();
+		char* mapPtr = &gameMap[currentRow].front();
 
 		char* stringToBeEncoded[ST::MAX_STR_LENGTH] = {};
 
@@ -230,12 +230,12 @@ namespace CM
 	}
 
 	// Init for our first gameMap using an initialized gamestateString.
-	void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<int>>& gameMap)
+	void convertBase64StrToMap(MD::MapData *mapData, std::vector<std::vector<char>>& gameMap)
 	{
 		int currentCol = 0,
 			currentRow = 0;
 
-		int* mapPtr = &gameMap[currentRow].front();
+		char* mapPtr = &gameMap[currentRow].front();
 
 		char* charPtr = mapData->ptrGamestateStr->asStr();
 
@@ -271,7 +271,7 @@ namespace CM
 			for (int index = 0; index < 6; index++)
 			{
 
-				if (mapPtr < &gameMap[currentRow].back())
+				if (mapPtr < (&gameMap[currentRow].back()))
 				{
 					*mapPtr = bits[index];
 
@@ -302,38 +302,8 @@ namespace CM
 		}
 	}
 
-	// Init display of gameMap.
-	void displayMap(std::vector<std::vector<int>>& gameMap)
-	{
-		ST::MyString* mapToPrint;
-
-		mapToPrint = new ST::MyString[gameMap.size()];
-
-		int currentY = 0;
-
-		for (const auto& currentRow : gameMap)
-		{
-			mapToPrint[currentY].append('\n');
-
-			for (int currentCell : currentRow)
-			{
-				mapToPrint[currentY].append(currentCell ? 'X' : '-');
-				mapToPrint[currentY].append(' ');
-			}
-
-			currentY++;
-		}
-
-		for (int index = 0; index < gameMap.size(); index++)
-		{
-			std::cout << mapToPrint[index].asStr();
-		}
-
-		std::cout << std::endl << std::endl;
-	}
-
 	// This is the lead init function for generating a gameMap.
-	void generateGameMap(MD::MapData *mapData, std::vector<std::vector<int>>& mapToInitialize)
+	void generateGameMap(MD::MapData *mapData, std::vector<std::vector<char>>& mapToInitialize)
 	{
 
 		switch (mapData->initWithSeed)
@@ -358,12 +328,5 @@ namespace CM
 		}
 
 		displayMap(mapToInitialize);
-	}
-
-	// Used in our simulation loop to request a number of generations to iterate through.
-	void userContinueIterations(unsigned short& numberOfIterations)
-	{
-		numberOfIterations = VI::verifyIntInput("Please input the number of times you want to"
-			" iterate (0 to terminate the simulation): ", 0, 4000);
 	}
 }
