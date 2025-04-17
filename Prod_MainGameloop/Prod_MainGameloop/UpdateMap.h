@@ -20,7 +20,7 @@
 namespace UM
 {
 	int getTotalNeighbors(int boardHeight, int boardWidth,
-		int& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
+		char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
 		std::vector<std::vector<char>>& mapToParse);
 
 	int valueToSetNewCell(int& currentY, int& currentX, int& height, int& width,

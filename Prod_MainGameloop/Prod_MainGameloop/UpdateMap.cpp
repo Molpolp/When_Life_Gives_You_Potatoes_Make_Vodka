@@ -142,12 +142,14 @@ namespace UM
 			currentY++;
 		}
 
-		for (int index = 0; index < gameMap.size(); index++)
+		for (int index = 0; index < static_cast<int>(gameMap.size()); index++)
 		{
 			std::cout << mapToPrint[index].asStr();
 		}
 
 		std::cout << std::endl << std::endl;
+
+		delete[] mapToPrint;
 	}
 
 	// Used to iterate the given map state and display it.
