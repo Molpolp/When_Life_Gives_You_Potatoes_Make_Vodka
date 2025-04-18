@@ -6,8 +6,7 @@ Description: This program is an implementation of Conway's Game of Life
 			 X is an alive cell
 			 ' ' (nothing) is a dead cell
 
-			 All input options are displayed in the mainMenu shown on program launch.
-
+Input: All input options are displayed in the mainMenu shown on program launch.
 Version: 2.0
 ***************************************/
 
@@ -67,12 +66,14 @@ int main()
 		CM::convertMapToBase64Str(&mapData, (generationIteration % 2 ? gameMap1 : gameMap0));
 
 		std::cout << mapData.seedToPrintStr->asStr();
+
+		// Used so if ran as an exe the program won't instantly close
+		// which stops the user from copying the requested output seed.
+		std::cout << std::endl << std::endl
+			<< "Press enter to conclude program execution.";
+
+		std::cin.peek();
 	}
-
-	std::cout << std::endl << std::endl
-		<< "Press enter to conclude program execution.";
-
-	std::cin.peek();
 
 	return 0;
 }
