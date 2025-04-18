@@ -3,17 +3,11 @@
 #ifndef CREATEMAP_H
 #define CREATEMAP_H
 
-#include "VerifyInput.h"
-#include "StringLib.h"
-#include "MapDataStruct.h"
-#include "UpdateMap.h"
-#include <iostream>
-#include <bitset>
-#include <cstdlib>
 #include <vector>
-
-// base64Map[character] = int		// This is our dictionary for character to int
-// base64Chars[int] = character		// This is our array for int to character
+#include <bitset>
+#include "UpdateMap.h"
+#include "MapDataStruct.h"
+#include "StringLib.h"
 #include "Base64Map.h"
 
 namespace CM

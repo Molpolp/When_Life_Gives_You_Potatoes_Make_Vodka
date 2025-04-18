@@ -1,18 +1,14 @@
 /***************************************
 Gregory Tuosto
 Date Completed: March 15, 2025
-Description: UpdateMap library used to iterate the game map
+Description: UpdateMap library used to iterate the game map.
 Version: 1.0
 ***************************************/
 
 #include "UpdateMap.h"
 
 namespace UM
-{
-	static const int ALIVE_CELL = 1,
-		DEAD_CELL = 0
-		;
-
+{	
 	// Counts the number of alive neighbors a cell has.
 	int getTotalNeighbors(MD::MapData *mapData, char& cellDeadOrAlive, int& yOfCellToCheck, int& xOfCellToCheck,
 		std::vector<std::vector<char>>& mapToParse)
@@ -87,7 +83,7 @@ namespace UM
 			return ALIVE_CELL;
 
 		// Error case
-		return 0;
+		return DEAD_CELL;
 
 	}
 
@@ -180,12 +176,12 @@ namespace UM
 	}
 
 	// Used to iterate the given map state and display it.
-	void iterateMap(MD::MapData *mapData, int& generationItteration,
+	void iterateMap(MD::MapData *mapData, int& generationIteration,
 		std::vector<std::vector<char>>& map0, std::vector<std::vector<char>>& map1)
 	{
 		clearScreen(true);
 
-		if (generationItteration % 2 == 0)
+		if (generationIteration % 2 == 0)
 		{
 			UM::updateMap(mapData, map0, map1);
 

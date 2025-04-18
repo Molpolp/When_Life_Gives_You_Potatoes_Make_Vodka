@@ -4,11 +4,7 @@
 #define VERIFY_INPUT_H
 
 #include <iostream>
-#include <vector>
-#include "StringLib.h"
-#include "Base64Map.h"
 
-// VI stands for Verify Input
 namespace VI
 {
 	int verifyIntInput(int inputItteration);

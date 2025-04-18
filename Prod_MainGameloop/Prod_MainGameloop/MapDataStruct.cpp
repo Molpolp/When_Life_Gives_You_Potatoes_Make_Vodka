@@ -1,7 +1,7 @@
 /***************************************
 Gregory Tuosto
 Date Completed: April 14, 2025
-Description: Data struct for storing map values
+Description: Struct for storing map data.
 Version: 1.0
 ***************************************/
 
@@ -17,13 +17,13 @@ namespace MD
 
 		mapHeight = mapWidth = 0;
 
-		initWithSeed = false;
+		initWithSeedBool = false;
 	}
 
 	// Provides direction for map init based on user input.
 	void MapData::initMapData()
 	{
-		initWithSeed = NO_SEED;
+		initWithSeedBool = NO_SEED;
 		
 		static char userSeedInput[500];
 		
@@ -40,7 +40,7 @@ namespace MD
 	}
 	inputSeedValid MapData::initMapData(userChoice USER_HAS_SEED)
 	{
-		initWithSeed = USER_HAS_SEED;
+		initWithSeedBool = USER_HAS_SEED;
 
 		ptrGamestateStr->newStr(getSeedInput());
 

@@ -1,7 +1,7 @@
 /***************************************
 Gregory Tuosto
 Date Completed: April 12, 2025
-Description: This library is my very own string library!
+Description: String library.
 Version: 1.0
 ***************************************/
 
@@ -25,7 +25,7 @@ namespace ST
 		}
 	}
 
-	int MyString::length()
+	const int MyString::length()
 	{
 		return strLen;
 	}

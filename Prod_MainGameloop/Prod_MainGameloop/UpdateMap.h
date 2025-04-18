@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include "Base64Map.h"
-#include "CreateMap.h"
+#include "MapDataStruct.h"
+#include "VerifyInput.h"
 
 #ifdef _WIN32
 	#include <Windows.h>
@@ -16,6 +16,12 @@
 	#include <unistd.h>
 
 #endif
+
+enum isCellDeadOrAlive
+{
+	DEAD_CELL = 0,
+	ALIVE_CELL = 1
+};
 
 namespace UM
 {

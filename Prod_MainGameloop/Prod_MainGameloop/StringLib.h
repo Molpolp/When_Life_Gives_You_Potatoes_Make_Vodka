@@ -3,19 +3,23 @@
 #ifndef STRING_LIB
 #define STRING_LIB
 
+#include <iostream>
 #include <stdexcept>
 #include "VerifyInput.h"
 
+enum strLibraryLengthLimits
+{
+	MAX_STR_LENGTH = 1024
+};
+
 namespace ST
 {
-	const int MAX_STR_LENGTH = 1024;
-
 	struct MyString
 	{
 		MyString();		// Constructor
 		~MyString();	// Destructor
 
-		int length();
+		const int length();
 		char* asStr();
 		void newStr(char*);
 		void getNewStr(const char[MAX_STR_LENGTH]);
@@ -24,7 +28,8 @@ namespace ST
 
 	private:
 		char* storedString,
-			* subStrsToCleanup[100] = { {nullptr} }; // Used to cleanup substrings that were dynamically allocated for outside use
+			// Used to cleanup substrings that were dynamically allocated for outside use
+			* subStrsToCleanup[100] = { {nullptr} };
 
 		int strLen,
 			nextSubStrIndex = 0;

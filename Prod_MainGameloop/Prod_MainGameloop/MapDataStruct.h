@@ -30,7 +30,7 @@ namespace MD
 		int mapHeight,
 			mapWidth;
 
-		bool initWithSeed;
+		bool initWithSeedBool;
 
 		ST::MyString* ptrGamestateStr;
 		ST::MyString* seedToPrintStr;

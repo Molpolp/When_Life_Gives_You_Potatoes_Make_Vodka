@@ -2,8 +2,7 @@
 Gregory Tuosto
 Final Project
 Date Completed: April 17, 2025
-Description: This is the project I'm working on for this class,
-			 It's a representation of Conway's Game of Life
+Description: This program is an implementation of Conway's Game of Life
 			 X is an alive cell
 			 ' ' (nothing) is a dead cell
 
@@ -12,13 +11,12 @@ Description: This is the project I'm working on for this class,
 Version: 2.0
 ***************************************/
 
-#include "CreateMap.h"
-#include "UpdateMap.h"
 #include "Base64Map.h"
-#include "VerifyInput.h"
-#include "StringLib.h"
+#include "CreateMap.h"
 #include "MapDataStruct.h"
-#include <cstdlib>
+#include "StringLib.h"
+#include "UpdateMap.h"
+#include "VerifyInput.h"
 
 void mainMenu(MD::MapData *mapData);
 
@@ -42,16 +40,16 @@ int main()
 	unsigned short continueIterationsToDo = 0;
 	UM::userContinueIterations(continueIterationsToDo);
 
-	int generationItteration = 0;
+	int generationIteration = 0;
 
 	// Main simulation loop.
 	while (continueIterationsToDo != 0)
 	{
 		for (unsigned short iteration = 0; iteration < continueIterationsToDo; iteration++)
 		{
-			UM::iterateMap(&mapData, generationItteration, gameMap0, gameMap1);
+			UM::iterateMap(&mapData, generationIteration, gameMap0, gameMap1);
 
-			generationItteration++;
+			generationIteration++;
 		}
 		
 		UM::userContinueIterations(continueIterationsToDo);
@@ -66,7 +64,7 @@ int main()
 	{
 		mapData.seedToPrintStr = new ST::MyString;
 
-		CM::convertMapToBase64Str(&mapData, (generationItteration % 2 ? gameMap1 : gameMap0));
+		CM::convertMapToBase64Str(&mapData, (generationIteration % 2 ? gameMap1 : gameMap0));
 
 		std::cout << mapData.seedToPrintStr->asStr();
 	}

@@ -1,7 +1,7 @@
 /***************************************
 Gregory Tuosto
 Date Completed: April 10, 2025
-Description: This library ensures valid input given specifications.
+Description: Ensures valid input given specifications.
 Version: 2.0
 ***************************************/
 
@@ -237,7 +237,8 @@ namespace VI
 			return toupper(userInput);
 	}
 
-	// Used to create a string aka character array.
+	// This function creates new memory allocations, as such it is
+	// meant to be used exclusively with StringLib.h
 	char* verifyCharArrInput(const char inputPrompt[], const short arraySize)
 	{
 		static bool invalidUserInput;

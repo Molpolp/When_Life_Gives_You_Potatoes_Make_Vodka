@@ -11,10 +11,10 @@ namespace CM
 {
 	/*
 	Example input string for a map using base 64 (A-Z)(a-z)(0-9)(+)(/)
-	(YY)(XX)(ZZ)(FFFFFFFFF...FF!RF)
-	(!RF) is included if 0 < (width * height) % 6
+	(YY)(XX)(ZZ)(FFFFFFFFF...FF!RV)
+	(!RF) is included if 0 != (width * height) % 6
 		R is the remainder count
-		F is the base 64 char containing the remainder values
+		V is the base 64 char containing the remainder values
 	(YY) is the encoded height of the map
 	(XX) is the encoded width of the map
 	(ZZ) is a checksum for the length of the string and is the total length of the string
@@ -40,7 +40,7 @@ namespace CM
 
 	// Creates a checksum for our encoded string.
 	// Though it is very simple and can easily be exploited it's still good to have just in case.
-	void createAndWriteChecksum(ST::MyString *encodedString)
+	static void createAndWriteChecksum(ST::MyString *encodedString)
 	{
 		char* copyToCheck = encodedString->asStr(),
 			checksumChars[3] = {};
@@ -136,7 +136,7 @@ namespace CM
 
 		char* mapPtr = &gameMap[currentRow].front();
 
-		char* stringToBeEncoded[ST::MAX_STR_LENGTH] = {};
+		char* stringToBeEncoded[MAX_STR_LENGTH] = {};
 
 		while (encodingMap)
 		{
@@ -306,7 +306,7 @@ namespace CM
 	void generateGameMap(MD::MapData *mapData, std::vector<std::vector<char>>& mapToInitialize)
 	{
 
-		switch (mapData->initWithSeed)
+		switch (mapData->initWithSeedBool)
 		{
 		case NO_SEED:
 		{

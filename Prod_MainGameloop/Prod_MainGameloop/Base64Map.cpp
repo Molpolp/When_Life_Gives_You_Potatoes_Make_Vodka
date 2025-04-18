@@ -10,8 +10,8 @@ Version: 1.0
 namespace B64
 {
     std::unordered_map<char, int> base64CharToVal;
-
-    std::array<char, 64> base64ValToChar;
+    
+    char base64ValToChar[64];
 
     void initializeBase64Maps()
     {
