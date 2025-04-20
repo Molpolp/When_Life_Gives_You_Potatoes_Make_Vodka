@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Prod_MainGameloop.cpp">
+    <ClCompile Include="Re_Life.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Base64Map.cpp">

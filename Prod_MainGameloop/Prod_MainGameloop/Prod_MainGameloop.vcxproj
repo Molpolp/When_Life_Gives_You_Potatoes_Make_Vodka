@@ -24,6 +24,7 @@
     <ProjectGuid>{3937db9a-300a-4497-8c72-987509633bfa}</ProjectGuid>
     <RootNamespace>ProdMainGameloop</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Re_Life</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -130,7 +131,7 @@
     <ClCompile Include="Base64Map.cpp" />
     <ClCompile Include="CreateMap.cpp" />
     <ClCompile Include="MapDataStruct.cpp" />
-    <ClCompile Include="Prod_MainGameloop.cpp" />
+    <ClCompile Include="Re_Life.cpp" />
     <ClCompile Include="StringLib.cpp" />
     <ClCompile Include="UpdateMap.cpp" />
     <ClCompile Include="VerifyInput.cpp" />
