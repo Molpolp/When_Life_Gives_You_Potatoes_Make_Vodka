@@ -6,7 +6,9 @@ Description: This program is an implementation of Conway's Game of Life
 			 X is an alive cell
 			 ' ' (nothing) is a dead cell
 
-Input: All input options are displayed in the mainMenu shown on program launch.
+Input: Optional encoded seed or map dimensions and a seed init from the user, 
+	   then a number of times to iterate and display the map,
+	   on request to terminate the user is asked if they want the current map encoded into a string for later use.
 Version: 2.0
 ***************************************/
 
